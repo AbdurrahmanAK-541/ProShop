@@ -6,7 +6,7 @@ const Loader = () => {
         <Spinner 
          animation='border' 
          role = 'status' 
-         style={{width: '100px', height: '100px', width: '100px', margin: 'auto', display: 'block'}} /*check react bootstrap to customise it*/ >  
+         style={{width: '100px', height: '100px', margin: 'auto', display: 'block'}} /*check react bootstrap to customise it*/ >  
          <span className='sr-only'>Loading.....</span>
         </Spinner>
     )
