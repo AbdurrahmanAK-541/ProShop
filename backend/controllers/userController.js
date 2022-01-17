@@ -1,4 +1,5 @@
 import asyncHandler from 'express-async-handler'
+import generateWebToken from '../utils/generateWebToken.js'
 import User from '../models/userModel.js'
 
 //38 1.20
@@ -20,7 +21,9 @@ const authenticateUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      token: null, // not introduced as of yet
+      token: generateWebToken(user._id),
+      //after we validation, if the user exists, it will be put in the 'user' variable
+      //if it matches => we will return the data + web token thats generated that includes the user id embedded as the payload
     })
   } else {
     res.status(401)
