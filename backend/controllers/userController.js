@@ -38,4 +38,26 @@ const authenticateUser = asyncHandler(async (req, res) => {
   })
   */
 
-export { authenticateUser }
+// @description  Get the user's  Profile
+// @route        GET /api/users/profile
+// @access       Private
+
+const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id)
+  //whatever is passed in as the token contains the id which fetches the user in the middleware
+  //and assigning it to req.user => able to use in any protected route we choose
+  if (user) {
+    //userDataAdmin in Postman
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    })
+  } else {
+    res.status(404)
+    throw new Error('User can not be found')
+  }
+})
+
+export { authenticateUser, getUserProfile }
