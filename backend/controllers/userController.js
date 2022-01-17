@@ -26,8 +26,45 @@ const authenticateUser = asyncHandler(async (req, res) => {
       //if it matches => we will return the data + web token thats generated that includes the user id embedded as the payload
     })
   } else {
-    res.status(401)
+    res.status(401) //401 means no valid authentication creditentials inputted
     throw new Error(`Invalid user email or password`)
+  }
+})
+
+// @description  Register new users
+// @route        POST /api/users
+// @access       Public
+const registerUser = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body // gives us access to body data.
+  //destructed the data to pull out the targeted information
+
+  const userExists = await User.findOne({ email }) //function retreives an email that matches the email requested
+
+  //check if user exists and if the inputed plain text password matches the encrypted one in DB
+  //this is acheivable in userModel. no need to import Bycrypt
+  if (userExists) {
+    res.status(400) //means the server cannot proccess the request due to client error (double username)
+    throw new Error('This user already exists')
+  }
+
+  const user = await User.create({
+    name,
+    email,
+    password, //hashed using middleware in the usermodel
+  })
+
+  if (user) {
+    res.status(201).json({
+      //201 means that response has been fulfilled and a new resource (user) has been created
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateWebToken(user._id),
+    })
+  } else {
+    res.status(400)
+    throw new Error('Invalid User Data')
   }
 })
 
@@ -60,4 +97,4 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 })
 
-export { authenticateUser, getUserProfile }
+export { authenticateUser, registerUser, getUserProfile }
