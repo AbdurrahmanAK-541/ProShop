@@ -24,8 +24,8 @@ const getProductById = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error('Product not found')
   }
-
-  res.json(products)
 })
+
+//fixed an error: accidentally duplicated res.json(products)
 
 export { getProductById, getProducts }
