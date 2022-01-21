@@ -3,7 +3,7 @@ import { Form, Row, Col, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getUserDetails } from '../actions/userActions'
+import { getUserDetails, updateUserProfile } from '../actions/userActions'
 
 const ProfileScreen = ({ location, history }) => {
   const [email, setEmail] = useState('')
@@ -19,6 +19,9 @@ const ProfileScreen = ({ location, history }) => {
 
   const userLogin = useSelector((state) => state.userLogin) // will be used to check if user is logged in
   const { userInformation } = userLogin //getting user information from the state
+
+  const userUpdatedProfile = useSelector((state) => state.userUpdatedProfile) //used to check if user profile successfully
+  const { success } = userUpdatedProfile // get the success value from the update profile state
 
   useEffect(() => {
     if (!userInformation) {
@@ -38,12 +41,15 @@ const ProfileScreen = ({ location, history }) => {
   }, [dispatch, history, userInformation, user]) //passed in dependencies for useEffect. fired off when a change is submitted
 
   const submitHandler = (e) => {
+    //call submit handler by submitting the form
     e.preventDefault()
     if (password !== confirmPassword) {
       //if the inputted password is not equal to the inputted confirm password
       setMessage('Passwords Do Not Match') //display warning message
     } else {
-      //Dispatch Update Profile
+      //if passwords math then
+      dispatch(updateUserProfile({ id: user._id, name, email, password })) //dispatch updateUserProfile which passes in the user by calling it from userActions.js
+      //id is the user object passed in to the action once submitted
     }
   }
 
@@ -54,6 +60,9 @@ const ProfileScreen = ({ location, history }) => {
         <h2>User's Profile</h2>
         {message && <Message variant='danger'>{message}</Message>}
         {error && <Message variant='danger'>{error}</Message>}
+        {success && (
+          <Message variant='success'>Profile Updated Successfully</Message>
+        )}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='name'>

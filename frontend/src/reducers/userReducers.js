@@ -1,4 +1,7 @@
 import {
+  USER_UPDATED_PROFILE_REQUEST,
+  USER_UPDATED_PROFILE_SUCCESS,
+  USER_UPDATED_PROFILE_FAIL,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
@@ -48,6 +51,21 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
       return { loading: false, user: action.payload } //user object will be filled with the action.payload (displays information)
     case USER_DETAILS_FAIL:
       return { loading: false, error: action.payload } //error will be filled with the action.payload
+    default:
+      return state
+  }
+}
+
+export const userUpdatedProfileReducer = (state = {}, action) => {
+  //empty state to begin with
+  switch (action.type) {
+    case USER_UPDATED_PROFILE_REQUEST:
+      return { loading: true }
+    case USER_UPDATED_PROFILE_SUCCESS:
+      return { loading: false, success: true, userInformation: action.payload }
+    //upon success, set the user infotmation to payload and a success value to true to use in the screen
+    case USER_UPDATED_PROFILE_FAIL:
+      return { loading: false, error: action.payload }
     default:
       return state
   }
