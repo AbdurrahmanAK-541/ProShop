@@ -75,6 +75,7 @@ const registerUser = asyncHandler(async (req, res) => {
   })
   */
 
+//first route that will be sent the token from the frontend
 // @description  Get the user's  Profile
 // @route        GET /api/users/profile
 // @access       Private
@@ -97,4 +98,37 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 })
 
-export { authenticateUser, registerUser, getUserProfile }
+// @description  Update the user's Profile
+// @route        PUT /api/users/profile
+// @access       Private (need to be logged in)
+
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id)
+  //whatever is passed in as the token contains the id which fetches the user in the middleware
+  //and assigning it to req.user => able to use in any protected route we choose
+  if (user) {
+    //if user is there
+    user.name = req.body.name || user.name //set the user.name to the new request inputted (body) name or normal user name
+    user.email = req.body.email || user.email //set the user.email to the new request inputted (body) email or normal user email
+    if (req.body.password) {
+      //check if a password has been sent
+      user.password = req.body.password //set user.password to req.body.password (automatically encrypted due to the middleware added in userModel.js)
+    }
+    const updatedUserDetails = await user.save()
+
+    res.json({
+      _id: updatedUserDetails._id,
+      name: updatedUserDetails.name,
+      email: updatedUserDetails.email,
+      isAdmin: updatedUserDetails.isAdmin,
+      token: generateWebToken(updatedUserDetails._id),
+      //after we validation, if the user exists, it will be put in the 'user' variable
+      //if it matches => we will return the data + web token thats generated that includes the user id embedded as the payload
+    })
+  } else {
+    res.status(404)
+    throw new Error('User can not be found')
+  }
+})
+
+export { authenticateUser, registerUser, getUserProfile, updateUserProfile }

@@ -6,7 +6,11 @@ import {
   productDetailsReducer,
 } from './reducers/productReducers'
 import { cartReducer } from './reducers/cartReducers' /*imported so that it can be used*/
-import { userLoginReducer, userRegisterReducer } from './reducers/userReducers'
+import {
+  userLoginReducer,
+  userRegisterReducer,
+  userDetailsReducer,
+} from './reducers/userReducers'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -14,6 +18,7 @@ const reducer = combineReducers({
   cart: cartReducer /*naming conventions: Call the reducer to whatever its called in the state then the reducers*/,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+  userDetails: userDetailsReducer, //bringing in userDetailsReducer which is now visible in the state
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
