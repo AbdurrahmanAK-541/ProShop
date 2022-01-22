@@ -33,9 +33,16 @@ const userInformationFromStorage = localStorage.getItem('userInformation')
   ? JSON.parse(localStorage.getItem('userInformation'))
   : null
 
+const userAddressFromStorage = localStorage.getItem('userAddress') //checks for user's address from storage
+  ? JSON.parse(localStorage.getItem('userAddress')) //if it exists then use it
+  : {} //if it doesn't exist then it will pass an empty object
+
 const initialState = {
-  cart: { cartItems: cartItemsFromStorage },
-  userLogin: { userInformation: userInformationFromStorage },
+  cart: {
+    cartItems: cartItemsFromStorage,
+    userAddress: userAddressFromStorage,
+  }, //add to the cart State
+  userLogin: { userInformation: userInformationFromStorage }, //added to the login state
   /*11:19 6.33 added our cart to the intialState and set it to an object and set cartItems to the cartItemsFromStorage(localstorage)*/
   /*^^ currently an empty array as nothing is being passed in to be stored (seen in redux dev-tool)*/
 }

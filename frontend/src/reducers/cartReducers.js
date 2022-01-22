@@ -1,7 +1,16 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constants/cartConstants'
+import {
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_SAVE_ADDRESS,
+} from '../constants/cartConstants'
 
-export const cartReducer = (state = { cartItems: [] }, action) => {
-  /*cartItems Array = more than one item in Cart*/
+//initial state for cart reducer
+export const cartReducer = (
+  state = { cartItems: [], userAddress: {} },
+  action
+) => {
+  //creating cartItems Array = more than one item in Cart
+  //included the user address as an empty object
   switch (action.type) {
     case CART_ADD_ITEM:
       const item =
@@ -38,6 +47,12 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
         ...state,
         cartItems: state.cartItems.filter((x) => x.product !== action.payload),
       }
+    case CART_SAVE_ADDRESS:
+      return {
+        ...state,
+        userAddress: action.payload,
+      }
+
     default:
       return state
   }
