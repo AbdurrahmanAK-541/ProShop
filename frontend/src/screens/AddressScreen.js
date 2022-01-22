@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
+import CheckoutProcess from '../components/CheckoutProcess'
 import { saveAddress } from '../actions/cartActions'
 
-const ShippingScreen = ({ history }) => {
+const AddressScreen = ({ history }) => {
   //destructure props (history)
   const cart = useSelector((state) => state.cart)
   const { userAddress } = cart
@@ -26,6 +27,8 @@ const ShippingScreen = ({ history }) => {
   }
   return (
     <FormContainer>
+      <CheckoutProcess p1 p2 />
+      {/*bring in the check out process that involves part1 (login) and part 2(userAddress )*/}
       <h1>User Address</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='address'>
@@ -80,4 +83,4 @@ const ShippingScreen = ({ history }) => {
   )
 }
 
-export default ShippingScreen
+export default AddressScreen
