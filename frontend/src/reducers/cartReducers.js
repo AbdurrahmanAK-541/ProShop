@@ -2,6 +2,7 @@ import {
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
   CART_SAVE_ADDRESS,
+  CART_SAVE_PAYMENT,
 } from '../constants/cartConstants'
 
 //initial state for cart reducer
@@ -47,10 +48,17 @@ export const cartReducer = (
         ...state,
         cartItems: state.cartItems.filter((x) => x.product !== action.payload),
       }
+
     case CART_SAVE_ADDRESS:
       return {
         ...state,
         userAddress: action.payload,
+      }
+
+    case CART_SAVE_PAYMENT:
+      return {
+        ...state,
+        paymentMethod: action.payload, //set the payload as the payment method
       }
 
     default:

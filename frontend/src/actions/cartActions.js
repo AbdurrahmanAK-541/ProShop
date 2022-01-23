@@ -3,6 +3,7 @@ import {
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
   CART_SAVE_ADDRESS,
+  CART_SAVE_PAYMENT,
 } from '../constants/cartConstants' /**/
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
@@ -46,9 +47,20 @@ export const removeFromCart = (id) => (dispatch, getState) => {
 
 export const saveAddress = (formData) => (dispatch, getState) => {
   dispatch({
-    type: CART_SAVE_ADDRESS,
-    payload: formData,
+    //function of the redux store that calls the store to dipatch an action
+    type: CART_SAVE_ADDRESS, //from Cart Reducer
+    payload: formData, //the data pack from the payload will contain data regarding address inputted in the form
   })
 
-  localStorage.setItem('userAddress', JSON.stringify(formData))
+  localStorage.setItem('userAddress', JSON.stringify(formData)) //saved in local storage
+}
+
+export const savePaymentMethod = (paymentData) => (dispatch, getState) => {
+  //passes in the payment method as 'paymentData'
+  dispatch({
+    type: CART_SAVE_PAYMENT, //from Cart Reducer
+    payload: paymentData, //the data pack from the payload will contain data regarding payment method
+  })
+
+  localStorage.setItem('paymentMethod', JSON.stringify(paymentData)) //saved in local storage
 }
