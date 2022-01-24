@@ -83,18 +83,19 @@ const registerUser = asyncHandler(async (req, res) => {
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
   //whatever is passed in as the token contains the id which fetches the user in the middleware
-  //and assigning it to req.user => able to use in any protected route we choose
+  //and assigning it to req.user => able to use in any protected route chosen
   if (user) {
     //userDataAdmin in Postman
     res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
+      _id: user._id, //returns the user id
+      name: user.name, //returns the user name
+      email: user.email, //returns the user email
+      isAdmin: user.isAdmin, //returns whether the user is an admin through a true/false option.
     })
   } else {
-    res.status(404)
-    throw new Error('User can not be found')
+    //if no user is found...
+    res.status(404) //respond with a HTTP 404 not found status code ==> cannot find requested resource.
+    throw new Error('User can not be found') //message is displayed to the user.
   }
 })
 
