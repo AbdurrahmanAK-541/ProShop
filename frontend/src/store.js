@@ -12,6 +12,7 @@ import {
   userDetailsReducer,
   userUpdatedProfileReducer,
 } from './reducers/userReducers'
+import { createOrderReducer } from './reducers/ordersReducers'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -21,6 +22,7 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer, //bringing in userDetailsReducer which is now visible in the state
   userUpdatedProfile: userUpdatedProfileReducer, //bringing in userDetailsReducer which is now visible in the state
+  createOrder: createOrderReducer, //bringing in createOrderReducer which is now visible in the sate -> now create an action :)
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
@@ -33,6 +35,7 @@ const userInformationFromStorage = localStorage.getItem('userInformation')
   ? JSON.parse(localStorage.getItem('userInformation'))
   : null
 
+//saved and loaded from local storage, through store.js -> whenever the store initialises, its automatically added to the state
 const userAddressFromStorage = localStorage.getItem('userAddress') //checks for user's address from storage
   ? JSON.parse(localStorage.getItem('userAddress')) //if it exists then use it
   : {} //if it doesn't exist then it will pass an empty object

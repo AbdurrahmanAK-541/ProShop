@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Button, Col } from 'react-bootstrap'
+import { Form, Button, Col, FormGroup } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
 import CheckoutProcess from '../components/CheckoutProcess'
@@ -17,7 +17,7 @@ const PaymentMethodScreen = ({ history }) => {
     history.push('/address') //redirect them to Address.Screen.js
   }
 
-  const [payment, setPayment] = useState('PayPal')
+  const [paymentMethod, setPaymentMethod] = useState('PayPal') //? payment/paymentMethod ..
   //component level state: payment, setPayment
   //State has a default of PayPal as the payment method
 
@@ -26,8 +26,8 @@ const PaymentMethodScreen = ({ history }) => {
   const submitHandler = (e) => {
     //calling submit handler and setting event to
     e.preventDefault()
-    dispatch(savePaymentMethod(payment))
-    //dispatch savePaymentMethod function and pass in payment object
+    dispatch(savePaymentMethod(paymentMethod))
+    //dispatch savePaymentMethod action and pass in payment object (method)
     history.push('/completeOrder') //moves onto new/next page which is order
   }
   return (
@@ -36,26 +36,31 @@ const PaymentMethodScreen = ({ history }) => {
       {/*bring in the check out process that involves part1 (login) and part 2(userAddress ) part 3(payment)*/}
       <h1>Payment Method</h1>
       <Form onSubmit={submitHandler}>
-        <Form.Group>
+        <FormGroup>
           <Form.Label as='legend'>Select Payment Method</Form.Label>
           <Col>
             {/* PayPal or Credit Card Payment Option*/}
             {/*  */}
             <Form.Check
-              type='radio'
-              label='PayPal Or Credit Card'
+              type='radio' //radio buttons -> cant check more than one method
+              label='PayPal Or Credit Card' //displayed to user
               id='PayPal'
               name='PayPalPaymentMethod'
               value='PayPal'
-              checked
-              onChange={(e) => setPayment(e.target.value)}
+              checked //checked by default
+              onChange={(e) => setPaymentMethod(e.target.value)} //when chosen, it's selected as payment method??
             ></Form.Check>
           </Col>
-        </Form.Group>
+        </FormGroup>
+
         {/*Spaces out the form */}
 
         {/*Button to proceed to the next step after submitting payment method*/}
-        <Button type='submit' variant='primary'>
+        <Button
+          className='justify-content-center mt-5' //spaced out the form button --> looks nicer
+          type='submit'
+          variant='primary'
+        >
           Proceed To Order
         </Button>
       </Form>

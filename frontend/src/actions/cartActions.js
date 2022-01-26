@@ -46,6 +46,7 @@ export const removeFromCart = (id) => (dispatch, getState) => {
 }
 
 export const saveAddress = (formData) => (dispatch, getState) => {
+  //will take in the address form data
   dispatch({
     //function of the redux store that calls the store to dipatch an action
     type: CART_SAVE_ADDRESS, //from Cart Reducer
@@ -59,8 +60,8 @@ export const savePaymentMethod = (paymentData) => (dispatch, getState) => {
   //passes in the payment method as 'paymentData'
   dispatch({
     type: CART_SAVE_PAYMENT, //from Cart Reducer
-    payload: paymentData, //the data pack from the payload will contain data regarding payment method
+    payload: paymentData, //the data pack from the payload will contain data regarding payment method??
   })
 
-  localStorage.setItem('paymentMethod', JSON.stringify(paymentData)) //saved in local storage
+  localStorage.setItem('paymentMethod', JSON.stringify(paymentData)) //saved in local storage ??payment/paymentMethod was 'paymentMethod
 }

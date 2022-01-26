@@ -51,13 +51,13 @@ export const cartReducer = (
 
     case CART_SAVE_ADDRESS:
       return {
-        ...state,
-        userAddress: action.payload,
+        ...state, //return the initial state plus ...
+        userAddress: action.payload, //the user address is also returned with the from data as the payload
       }
 
     case CART_SAVE_PAYMENT:
       return {
-        ...state,
+        ...state, //return the initial state
         paymentMethod: action.payload, //set the payload as the payment method
       }
 

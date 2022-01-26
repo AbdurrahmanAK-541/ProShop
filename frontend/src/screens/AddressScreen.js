@@ -6,14 +6,14 @@ import CheckoutProcess from '../components/CheckoutProcess'
 import { saveAddress } from '../actions/cartActions'
 
 const AddressScreen = ({ history }) => {
-  //destructure props (history)
+  //destructure props (history) - needed to redirect/push
   const cart = useSelector((state) => state.cart)
   const { userAddress } = cart
   //select from the state the cart sections of the state to get user shipping address
   //above useState('') because the aim is to fill the
   const [address, setAddress] = useState(userAddress.address) //get userAddress and get address
   const [city, setCity] = useState(userAddress.city) //get userAddress and get city
-  const [postCode, setPostCode] = useState(userAddress.postCode) //get userAddress and get post code
+  const [postCode, setPostCode] = useState(userAddress.postCode) //get userAddress and get post code //52
   const [country, setCountry] = useState(userAddress.country) //get userAddress and get country
 
   const dispatch = useDispatch() //used to dipatch saveAddress function
@@ -75,7 +75,11 @@ const AddressScreen = ({ history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' variant='primary'>
+        <Button
+          className='justify-content-center mt-3' //spaced out the form button --> looks nicer
+          type='submit'
+          variant='primary'
+        >
           Proceed To Payment
         </Button>
       </Form>

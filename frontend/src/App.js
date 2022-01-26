@@ -20,12 +20,16 @@ const App = () => {
       <main className='py-3'>
         <Container>
           <Route path='/login' component={LoginScreen} />
+          {/*P1 */}
           <Route path='/register' component={RegisterScreen} />
           <Route path='/profile' component={ProfileScreen} />
           <Route path='/product/:id' component={ProductScreen} />
           <Route path='/address' component={AddressScreen} />
+          {/*P2 */}
           <Route path='/payment' component={PaymentMethodScreen} />
+          {/*P3*/}
           <Route path='/completeOrder' component={OrderPage} />
+          {/*P4 */}
           <Route
             path='/cart/:id?'
             component={CartScreen} /*id is optional hence why I added a ?*/
