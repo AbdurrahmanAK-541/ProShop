@@ -3,25 +3,25 @@ import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
 import CheckoutProcess from '../components/CheckoutProcess'
-import { saveAddress } from '../actions/cartActions'
+import { saveShippingAddress } from '../actions/cartActions'
 
 const AddressScreen = ({ history }) => {
   //destructure props (history) - needed to redirect/push
   const cart = useSelector((state) => state.cart)
-  const { userAddress } = cart
+  const { shippingAddress } = cart
   //select from the state the cart sections of the state to get user shipping address
   //above useState('') because the aim is to fill the
-  const [address, setAddress] = useState(userAddress.address) //get userAddress and get address
-  const [city, setCity] = useState(userAddress.city) //get userAddress and get city
-  const [postCode, setPostCode] = useState(userAddress.postCode) //get userAddress and get post code //52
-  const [country, setCountry] = useState(userAddress.country) //get userAddress and get country
+  const [address, setAddress] = useState(shippingAddress.address) //get userAddress and get address
+  const [city, setCity] = useState(shippingAddress.city) //get userAddress and get city
+  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode) //get userAddress and get post code //52
+  const [country, setCountry] = useState(shippingAddress.country) //get userAddress and get country
 
   const dispatch = useDispatch() //used to dipatch saveAddress function
 
   const submitHandler = (e) => {
     //calling submit handler and setting event to
     e.preventDefault()
-    dispatch(saveAddress({ address, city, postCode, country }))
+    dispatch(saveShippingAddress({ address, city, postalCode, country }))
     //dispatch save address function and pass in object with the form data
     history.push('/payment') //moves onto new/next page which is payment
   }
@@ -58,9 +58,9 @@ const AddressScreen = ({ history }) => {
           <Form.Control
             type='text'
             placeholder='Enter post Code'
-            value={postCode}
+            value={postalCode}
             required
-            onChange={(e) => setPostCode(e.target.value)}
+            onChange={(e) => setPostalCode(e.target.value)}
           ></Form.Control>
         </Form.Group>
 

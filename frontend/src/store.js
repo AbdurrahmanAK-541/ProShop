@@ -36,14 +36,14 @@ const userInformationFromStorage = localStorage.getItem('userInformation')
   : null
 
 //saved and loaded from local storage, through store.js -> whenever the store initialises, its automatically added to the state
-const userAddressFromStorage = localStorage.getItem('userAddress') //checks for user's address from storage
-  ? JSON.parse(localStorage.getItem('userAddress')) //if it exists then use it
+const shippingAddressFromStorage = localStorage.getItem('shippingAddress') //checks for user's address from storage
+  ? JSON.parse(localStorage.getItem('shippingAddress')) //if it exists then use it
   : {} //if it doesn't exist then it will pass an empty object
 
 const initialState = {
   cart: {
     cartItems: cartItemsFromStorage,
-    userAddress: userAddressFromStorage,
+    shippingAddress: shippingAddressFromStorage,
   }, //add to the cart State
   userLogin: { userInformation: userInformationFromStorage }, //added to the login state
   /*11:19 6.33 added our cart to the intialState and set it to an object and set cartItems to the cartItemsFromStorage(localstorage)*/

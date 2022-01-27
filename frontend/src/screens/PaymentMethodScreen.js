@@ -8,11 +8,11 @@ import { savePaymentMethod } from '../actions/cartActions'
 const PaymentMethodScreen = ({ history }) => {
   //destructure props (history)
   const cart = useSelector((state) => state.cart)
-  const { userAddress } = cart //
+  const { shippingAddress } = cart //
   //select from the state the cart sections of the state to get user shipping address
   //above useState('') because the aim is to fill the
 
-  if (!userAddress) {
+  if (!shippingAddress) {
     //redirect if no address is inputted
     history.push('/address') //redirect them to Address.Screen.js
   }
@@ -45,7 +45,7 @@ const PaymentMethodScreen = ({ history }) => {
               type='radio' //radio buttons -> cant check more than one method
               label='PayPal Or Credit Card' //displayed to user
               id='PayPal'
-              name='PayPalPaymentMethod'
+              name='paymentMethod' //was PayPalPaymentMethod
               value='PayPal'
               checked //checked by default
               onChange={(e) => setPaymentMethod(e.target.value)} //when chosen, it's selected as payment method??

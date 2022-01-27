@@ -45,7 +45,7 @@ export const removeFromCart = (id) => (dispatch, getState) => {
   localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
 }
 
-export const saveAddress = (formData) => (dispatch, getState) => {
+export const saveShippingAddress = (formData) => (dispatch, getState) => {
   //will take in the address form data
   dispatch({
     //function of the redux store that calls the store to dipatch an action
@@ -53,7 +53,7 @@ export const saveAddress = (formData) => (dispatch, getState) => {
     payload: formData, //the data pack from the payload will contain data regarding address inputted in the form
   })
 
-  localStorage.setItem('userAddress', JSON.stringify(formData)) //saved in local storage
+  localStorage.setItem('shippingAddress', JSON.stringify(formData)) //saved in local storage
 }
 
 export const savePaymentMethod = (paymentData) => (dispatch, getState) => {

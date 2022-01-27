@@ -8,13 +8,13 @@ import Order from '../models/orderModel.js'
 const addOrderedItems = asyncHandler(async (req, res) => {
   const {
     orderedItems,
-    userAddress,
+    shippingAddress,
     paymentMethod, //paymentMethod??payment??
     ordereditemsPrice,
     vatPrice,
     collectionPrice,
     totalPrice,
-  } = req.body //??payment? paymentMethod??
+  } = req.body //??payment? paymentMethosd??
 
   //makes sure orderedItems is not empty.
   //if the orderedItems exists and has a length thats equal to 0
@@ -28,7 +28,7 @@ const addOrderedItems = asyncHandler(async (req, res) => {
       //instantiate a new order with new Order an pass in requested body objects + logged in user
       orderedItems,
       user: req.user._id, //protected route -> get token -> get user id from token
-      userAddress,
+      shippingAddress,
       paymentMethod, //paymentMethod??payment?? was orderedPaymentMethod
       ordereditemsPrice,
       vatPrice,

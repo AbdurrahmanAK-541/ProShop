@@ -7,7 +7,7 @@ import {
 
 //initial state for cart reducer
 export const cartReducer = (
-  state = { cartItems: [], userAddress: {} },
+  state = { cartItems: [], shippingAddress: {} },
   action
 ) => {
   //creating cartItems Array = more than one item in Cart
@@ -52,7 +52,7 @@ export const cartReducer = (
     case CART_SAVE_ADDRESS:
       return {
         ...state, //return the initial state plus ...
-        userAddress: action.payload, //the user address is also returned with the from data as the payload
+        shippingAddress: action.payload, //the shipping address is also returned with the from data as the payload
       }
 
     case CART_SAVE_PAYMENT:

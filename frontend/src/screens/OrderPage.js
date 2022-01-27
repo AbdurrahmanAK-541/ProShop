@@ -74,10 +74,11 @@ const OrderPage = ({ history }) => {
         //this action will pass in the listed items below that are in the cart
         //going back to ordersActions.js -> createAnOrder will fire off
         orderItems: cart.cartItems,
-        userAddress: cart.userAddress,
+        shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod, //payment?? was paymentMethod
         sumItemsPrice: cart.sumItemsPrice,
         collectionFee: cart.collectionFee,
+        //vatPrice: cart.vatPrice,
         totalPrice: cart.totalPrice,
       })
     )
@@ -97,14 +98,14 @@ const OrderPage = ({ history }) => {
               <p>
                 <strong>Address:</strong>
                 {/*??paths required for the full address.??*/}
-                {cart.userAddress.address},{cart.userAddress.city},
-                {cart.userAddress.postCode},{cart.userAddress.country},
+                {cart.shippingAddress.address},{cart.shippingAddress.city},
+                {cart.shippingAddress.postCode},{cart.shippingAddress.country},
               </p>
             </ListGroup.Item>
 
             <ListGroup.Item>
               <h2>Payment Method</h2>
-              <strong>Method: </strong>
+              <strong>Method:</strong>
               {cart.paymentMethod}
               {/*??payment/paymentMethod??-->was paymentMethod*/}
             </ListGroup.Item>
