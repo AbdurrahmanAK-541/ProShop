@@ -46,4 +46,20 @@ const addOrderedItems = asyncHandler(async (req, res) => {
 //1. move back to frontend -> create an action thats makes a request to ordersRoute -> created and sent down from the state ->
 //after the order is created in the DB -> send to a specific order page that will include the PP button (using an id)
 
-export { addOrderedItems } //export so it can be used in the ordersRoute.js
+// @description  Get an Order by an ID
+// @route        GET /api/orders/;id
+// @access       Private/Protected
+
+const getOrderById = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id).populate(
+    'user',
+    'name email'
+  )
+  if (order) {
+    res.json(order)
+  } else {
+    res.status(404)
+    throw new Error('Order Cannot Be Found')
+  }
+})
+export { addOrderedItems, getOrderById } //export so it can be used in the ordersRoute.js

@@ -75,7 +75,7 @@ const OrderPage = ({ history }) => {
         //going back to ordersActions.js -> createAnOrder will fire off
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
-        paymentMethod: cart.paymentMethod, //payment?? was paymentMethod
+        paymentMethod: cart.paymentMethod,
         sumItemsPrice: cart.sumItemsPrice,
         collectionFee: cart.collectionFee,
         //vatPrice: cart.vatPrice,
