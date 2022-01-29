@@ -57,7 +57,11 @@ const LoginScreen = ({ location, history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' variant='primary'>
+        <Button
+          className='justify-content-center mt-3'
+          type='submit'
+          variant='primary'
+        >
           Sign in
         </Button>
       </Form>

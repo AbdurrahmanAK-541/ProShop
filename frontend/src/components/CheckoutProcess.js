@@ -10,7 +10,7 @@ const CheckoutProcess = ({ p1, p2, p3, p4 }) => {
       <Nav.Item>
         {/* if on part one of the process, then login. else, disable login*/}
         {p1 ? (
-          <Nav.Link to='/login'>Sign In</Nav.Link>
+          <Nav.Link to='/login'>1. Sign In</Nav.Link>
         ) : (
           <Nav.Link disabled>SignIn</Nav.Link>
         )}
@@ -18,7 +18,7 @@ const CheckoutProcess = ({ p1, p2, p3, p4 }) => {
       <Nav.Item>
         {/* if on part 2 of the process, then display address . else, disable address*/}
         {p2 ? (
-          <Nav.Link href='/address'>Address</Nav.Link>
+          <Nav.Link href='/address'>2. Address</Nav.Link>
         ) : (
           <Nav.Link disabled>Address</Nav.Link>
         )}
@@ -26,17 +26,17 @@ const CheckoutProcess = ({ p1, p2, p3, p4 }) => {
       <Nav.Item>
         {/* if on part 3 of the process, then display payment . else, disable payment*/}
         {p3 ? (
-          <Nav.Link href='/payment'>Payment</Nav.Link>
+          <Nav.Link href='/payment'>3. Payment</Nav.Link>
         ) : (
-          <Nav.Link disabled>Payment</Nav.Link>
+          <Nav.Link disabled>3. Payment</Nav.Link>
         )}
       </Nav.Item>
       <Nav.Item>
         {/* if on part 4 of the process, then display Order . else, disable order*/}
         {p4 ? (
-          <Nav.Link href='/completeOrder'>Order</Nav.Link>
+          <Nav.Link href='/completeOrder'>4. Order</Nav.Link>
         ) : (
-          <Nav.Link disabled>Order</Nav.Link>
+          <Nav.Link disabled>4. Order</Nav.Link>
         )}
       </Nav.Item>
     </Nav>

@@ -7,18 +7,19 @@ import Order from '../models/orderModel.js'
 
 const addOrderedItems = asyncHandler(async (req, res) => {
   const {
-    orderedItems,
+    orderItems, //was orderedItems
     shippingAddress,
     paymentMethod, //paymentMethod??payment??
     ordereditemsPrice,
     vatPrice,
-    collectionPrice,
+    shippingPrice,
     totalPrice,
   } = req.body //??payment? paymentMethosd??
 
   //makes sure orderedItems is not empty.
   //if the orderedItems exists and has a length thats equal to 0
-  if (orderedItems && orderedItems.length === 0) {
+  if (orderItems && orderItems.length === 0) {
+    //was orderedItems
     res.status(400) //respond with a bad request
     throw new Error('No ordered items') //custom error message
     return
@@ -26,20 +27,20 @@ const addOrderedItems = asyncHandler(async (req, res) => {
     //create a new order in the DB
     const order = new Order({
       //instantiate a new order with new Order an pass in requested body objects + logged in user
-      orderedItems,
+      orderItems, //was orderedItems
       user: req.user._id, //protected route -> get token -> get user id from token
       shippingAddress,
       paymentMethod, //paymentMethod??payment?? was orderedPaymentMethod
       ordereditemsPrice,
       vatPrice,
-      collectionPrice,
+      shippingPrice,
       totalPrice,
     })
 
     //save in the DB
     //set the requested order to await plus the order that was just instantiated and then call '.save()'
-    const requestedOrder = await order.save()
-    res.status(201).json({ requestedOrder })
+    const createdOrder = await order.save() //was requestedOrder
+    res.status(201).json({ createdOrder })
     //new request has been made/created and the pass in the 'requestedOrder'
   }
 })

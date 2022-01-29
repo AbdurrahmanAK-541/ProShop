@@ -1,13 +1,14 @@
+import axios from 'axios'
 import {
   CREATE_ORDER_FAIL,
   CREATE_ORDER_SUCCESS,
   CREATE_ORDER_REQUEST,
 } from '../constants/ordersConstants'
-import axios from 'axios'
 
 //fire off when PLACE ORDER button is pressed. (57 12:00)
 //import createAnOrder action to the orderPage.js
-export const createAnOrder = (order) => async (dispatch, getState) => {
+//was createAnOrder
+export const createOrder = (order) => async (dispatch, getState) => {
   //takes in the order object and passes in getState as token is needed
   try {
     dispatch({

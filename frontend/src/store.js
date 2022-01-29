@@ -12,7 +12,7 @@ import {
   userDetailsReducer,
   userUpdatedProfileReducer,
 } from './reducers/userReducers'
-import { createOrderReducer } from './reducers/ordersReducers'
+import { orderCreateReducer } from './reducers/ordersReducers'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -22,7 +22,9 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer, //bringing in userDetailsReducer which is now visible in the state
   userUpdatedProfile: userUpdatedProfileReducer, //bringing in userDetailsReducer which is now visible in the state
-  createOrder: createOrderReducer, //bringing in createOrderReducer which is now visible in the sate -> now create an action :)
+  orderCreate: orderCreateReducer, //bringing in createOrderReducer which is now visible in the sate -> now create an action :)
+
+  //was createOrder : createOrderReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
@@ -40,10 +42,16 @@ const shippingAddressFromStorage = localStorage.getItem('shippingAddress') //che
   ? JSON.parse(localStorage.getItem('shippingAddress')) //if it exists then use it
   : {} //if it doesn't exist then it will pass an empty object
 
+//ADDED payment method to the local storage.
+const paymentMethodFromStorage = localStorage.getItem('paymentMethod') //checks for user's payment Method from storage
+  ? JSON.parse(localStorage.getItem('paymentMethod')) //if it exists then use it
+  : {} //if it doesn't exist then it will pass an empty object
+
 const initialState = {
   cart: {
     cartItems: cartItemsFromStorage,
     shippingAddress: shippingAddressFromStorage,
+    paymentMethod: paymentMethodFromStorage,
   }, //add to the cart State
   userLogin: { userInformation: userInformationFromStorage }, //added to the login state
   /*11:19 6.33 added our cart to the intialState and set it to an object and set cartItems to the cartItemsFromStorage(localstorage)*/

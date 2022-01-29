@@ -12,9 +12,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import Message from '../components/Message'
 import CheckoutProcess from '../components/CheckoutProcess'
 import { Link } from 'react-router-dom'
-import { createAnOrder } from '../actions/ordersActions'
+import { createOrder } from '../actions/ordersActions'
 
-const OrderPage = ({ history }) => {
+const PlaceOrderScreen = ({ history }) => {
   //pass in history as a prop (later used as a dependency + )
   const dispatch = useDispatch()
 
@@ -52,8 +52,8 @@ const OrderPage = ({ history }) => {
   ).toFixed(2)
   //total price will include all the costs to 2 decimal places.
 
-  const createOrder = useSelector((state) => state.createOrder) //getting from the state createOrder
-  const { order, success, error } = createOrder //we pull from createOrder will be the order, success and error value too
+  const orderCreate = useSelector((state) => state.orderCreate) //getting from the state createOrder
+  const { order, success, error } = orderCreate //we pull from createOrder will be the order, success and error value too
   //bring in createOrder state -> once createAnOrder is dispatched, it will send everything down
   //through the state -> need to bring it in
   //if success is true, then trigger placeOrderHandler and dispatch createAnOrder.(ready for redirect -> useEffect)
@@ -68,9 +68,9 @@ const OrderPage = ({ history }) => {
   const placeOrderHandler = () => {
     //fire off when PLACE ORDER button is pressed...
     //57 8:00
+    //this dispatches createOrder as an action...
     dispatch(
-      //this dispatches createAnOrder as an action...
-      createAnOrder({
+      createOrder({
         //this action will pass in the listed items below that are in the cart
         //going back to ordersActions.js -> createAnOrder will fire off
         orderItems: cart.cartItems,
@@ -78,7 +78,7 @@ const OrderPage = ({ history }) => {
         paymentMethod: cart.paymentMethod,
         sumItemsPrice: cart.sumItemsPrice,
         collectionFee: cart.collectionFee,
-        //vatPrice: cart.vatPrice,
+        vatPrice: cart.vatPrice,
         totalPrice: cart.totalPrice,
       })
     )
@@ -97,9 +97,11 @@ const OrderPage = ({ history }) => {
               <h2>User Address</h2>
               <p>
                 <strong>Address:</strong>
-                {/*??paths required for the full address.??*/}
+                {/*??paths required for the full address.??
+                also can now see the post code*/}
                 {cart.shippingAddress.address},{cart.shippingAddress.city},
-                {cart.shippingAddress.postCode},{cart.shippingAddress.country},
+                {cart.shippingAddress.postalCode},{cart.shippingAddress.country}
+                ,
               </p>
             </ListGroup.Item>
 
@@ -194,10 +196,9 @@ const OrderPage = ({ history }) => {
                   {/*total price including all Tax's and Fee's*/}
                 </Row>
               </ListGroup.Item>
-              <ListGroupItem>
-                {error && <Message variant='danger'>{error}</Message>}
-                {/*display whatever the error is through a Message and the variant = alert component */}
-              </ListGroupItem>
+
+              {error && <Message variant='danger'>{error}</Message>}
+              {/*display whatever the error is through a Message and the variant = alert component */}
               <ListGroupItem>
                 <Button
                   type='button'
@@ -216,4 +217,4 @@ const OrderPage = ({ history }) => {
   )
 }
 
-export default OrderPage
+export default PlaceOrderScreen

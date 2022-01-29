@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { Form, Row, Col, Button } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -84,19 +83,23 @@ const RegisterScreen = ({ location, history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' variant='primary'>
+        <Button
+          className='justify-content-center mt-3'
+          type='submit'
+          variant='primary'
+        >
           Register
         </Button>
       </Form>
 
-      <Row className='py-3'>
+      {/* <Row className='py-3'>
         <Col>
           Already an existing user?{' '}
           <Link to={redirect ? `/login?redirect=${redirect}` : `/login`}>
             Now
           </Link>
         </Col>
-      </Row>
+  </Row> */}
     </FormContainer>
   )
 }

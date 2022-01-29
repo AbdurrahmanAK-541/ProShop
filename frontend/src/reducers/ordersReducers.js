@@ -6,7 +6,8 @@ import {
 
 //import to store.js
 //pass in state as an empty object and an action
-export const createOrderReducer = (state = {}, action) => {
+export const orderCreateReducer = (state = {}, action) => {
+  //was createOrderReducer
   switch (action.type) {
     case CREATE_ORDER_REQUEST:
       return {
