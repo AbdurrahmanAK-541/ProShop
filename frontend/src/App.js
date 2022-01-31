@@ -12,6 +12,7 @@ import ProfileScreen from './screens/ProfileScreen'
 import AddressScreen from './screens/AddressScreen'
 import PaymentMethodScreen from './screens/PaymentMethodScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
+import OrderScreen from './screens/OrderScreen'
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
           {/*P3*/}
           <Route path='/completeOrder' component={PlaceOrderScreen} />
           {/*P4 */}
+          <Route path='/order/:id' component={OrderScreen} />
           <Route
             path='/cart/:id?'
             component={CartScreen} /*id is optional hence why I added a ?*/
