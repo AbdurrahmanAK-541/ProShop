@@ -12,7 +12,10 @@ import {
   userDetailsReducer,
   userUpdatedProfileReducer,
 } from './reducers/userReducers'
-import { orderCreateReducer } from './reducers/ordersReducers'
+import {
+  orderCreateReducer,
+  orderDetailReducer,
+} from './reducers/ordersReducers'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -23,7 +26,7 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer, //bringing in userDetailsReducer which is now visible in the state
   userUpdatedProfile: userUpdatedProfileReducer, //bringing in userDetailsReducer which is now visible in the state
   orderCreate: orderCreateReducer, //bringing in createOrderReducer which is now visible in the sate -> now create an action :)
-
+  orderDetail: orderDetailReducer,
   //was createOrder : createOrderReducer
 })
 

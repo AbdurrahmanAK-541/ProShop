@@ -3,3 +3,7 @@ export const CREATE_ORDER_SUCCESS = 'CREATE_ORDER_SUCCESS'
 export const CREATE_ORDER_FAIL = 'CREATE_ORDER_FAIL'
 
 //CONSTANTS -> reducer -> action (same old same old :) )
+
+export const ORDER_DETAIL_REQUEST = 'ORDER_DETAIL_REQUEST'
+export const ORDER_DETAIL_SUCCESS = 'ORDER_DETAIL_SUCCESS'
+export const ORDER_DETAIL_FAIL = 'ORDER_DETAIL_FAIL'
