@@ -26,9 +26,10 @@ const addOrderedItems = asyncHandler(async (req, res) => {
   } else {
     //create a new order in the DB
     const order = new Order({
+      //paths
       //instantiate a new order with new Order an pass in requested body objects + logged in user
-      orderItems, //was orderedItems
       user: req.user._id, //protected route -> get token -> get user id from token
+      orderItems, //was orderedItems
       shippingAddress,
       paymentMethod, //paymentMethod??payment?? was orderedPaymentMethod
       ordereditemsPrice,
@@ -39,8 +40,8 @@ const addOrderedItems = asyncHandler(async (req, res) => {
 
     //save in the DB
     //set the requested order to await plus the order that was just instantiated and then call '.save()'
-    const createdOrder = await order.save() //was requestedOrder
-    res.status(201).json({ createdOrder })
+    const createOrder = await order.save() //was requestedOrder
+    res.status(201).json(createOrder) //I USED SQUIGLY BRAKCETS LIKE A DICKHEAD!!!
     //new request has been made/created and the pass in the 'requestedOrder'
   }
 })

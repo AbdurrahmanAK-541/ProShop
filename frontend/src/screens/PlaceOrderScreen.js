@@ -72,7 +72,7 @@ const PlaceOrderScreen = ({ history }) => {
     dispatch(
       createOrder({
         //this action will pass in the listed items below that are in the cart
-        //going back to ordersActions.js -> createAnOrder will fire off
+        //going back to ordersActions.js -> createOrder will fire off
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
