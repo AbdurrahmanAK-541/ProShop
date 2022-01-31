@@ -41,7 +41,8 @@ const addOrderedItems = asyncHandler(async (req, res) => {
     //save in the DB
     //set the requested order to await plus the order that was just instantiated and then call '.save()'
     const createOrder = await order.save() //was requestedOrder
-    res.status(201).json(createOrder) //I USED SQUIGLY BRAKCETS LIKE A DICKHEAD!!!
+    res.status(201).json(createOrder)
+    //I USED SQUIGLY BRAKCETS LIKE A DICKHEAD!!! squigly -> returns json object and the normal returns the data inside the object
     //new request has been made/created and the pass in the 'requestedOrder'
   }
 })
@@ -54,6 +55,8 @@ const addOrderedItems = asyncHandler(async (req, res) => {
 
 const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id).populate(
+    //poplulate = mongoose method that can link documents across collections -> have a schema for each one
+    //populate from 'user' and have the name + email fields from user attached to it
     'user',
     'name email'
   )
