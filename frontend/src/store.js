@@ -15,9 +15,11 @@ import {
 import {
   orderCreateReducer,
   orderDetailReducer,
+  payOrderReducer,
 } from './reducers/ordersReducers'
 
 const reducer = combineReducers({
+  //viewed in the state
   productList: productListReducer,
   productDetails: productDetailsReducer,
   cart: cartReducer /*naming conventions: Call the reducer to whatever its called in the state then the reducers*/,
@@ -28,6 +30,7 @@ const reducer = combineReducers({
   orderCreate: orderCreateReducer, //bringing in createOrderReducer which is now visible in the sate -> now create an action :)
   orderDetail: orderDetailReducer,
   //was createOrder : createOrderReducer
+  payOrder: payOrderReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

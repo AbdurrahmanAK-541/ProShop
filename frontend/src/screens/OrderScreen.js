@@ -45,7 +45,7 @@ const OrderScreen = ({ match }) => {
     if (!order || order._id !== orderId) {
       dispatch(getOrderDetail(orderId))
     }
-  }, [order, orderId]) //required dependencies
+  }, [dispatch, orderId]) //required dependencies
 
   //loading icon spinning whilst waiting for data to be importted else ...
   return loading ? (
