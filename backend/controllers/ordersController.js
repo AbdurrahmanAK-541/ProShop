@@ -57,6 +57,7 @@ const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id).populate(
     //poplulate = mongoose method that can link documents across collections -> have a schema for each one
     //populate from 'user' and have the name + email fields from user attached to it
+    //used in OrderScreen.js
     'user',
     'name email'
   )
@@ -67,4 +68,33 @@ const getOrderById = asyncHandler(async (req, res) => {
     throw new Error('Order Cannot Be Found')
   }
 })
-export { addOrderedItems, getOrderById } //export so it can be used in the ordersRoute.js
+
+// @description  Update the order status to 'Paid'
+// @route        GET /api/orders/:id/pay
+// @access       Private/Protected
+
+const updateOrderToPaid = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+
+  if (order) {
+    //if the order is found..
+    order.isPaid = true //set to true as its set to false by default ...
+    order.paidAt = Date.now() //set the paidAt to current date
+    order.paymentResult = {
+      //comes from paypal.
+      //set to an object
+      //added from PayPal (res comes from paypal)
+      id: req.body.id,
+      status: req.body.status,
+      update_time: req.body.update_time,
+      email_address: req.body.payer.email_address, //in a payer object
+    }
+
+    const updatedOrder = await order.save()
+    res.json(updatedOrder)
+  } else {
+    res.status(404)
+    throw new Error('Order Cannot Be Found')
+  }
+})
+export { addOrderedItems, getOrderById, updateOrderToPaid } //export so it can be used in the ordersRoute.js
