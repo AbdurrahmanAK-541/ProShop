@@ -97,4 +97,15 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     throw new Error('Order Cannot Be Found')
   }
 })
-export { addOrderedItems, getOrderById, updateOrderToPaid } //export so it can be used in the ordersRoute.js
+
+// @description  Get the user orders
+// @route        GET /api/orders/userOrders
+// @access       Private/Protected
+
+const getUserOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id }) //only find because we get more than one
+  res.json(orders)
+  //pass in an object where we find orders where the user is = to the logged in user.
+})
+
+export { addOrderedItems, getOrderById, updateOrderToPaid, getUserOrders } //export so it can be used in the ordersRoute.js
