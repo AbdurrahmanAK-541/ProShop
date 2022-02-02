@@ -64,6 +64,7 @@ export const orderDetailReducer = (
   }
 }
 
+//orderPayReducer
 export const payOrderReducer = (state = {}, action) => {
   //set the state to an empty object
   switch (action.type) {

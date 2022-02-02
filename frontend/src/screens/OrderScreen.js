@@ -1,15 +1,28 @@
-import React, { useEffect } from 'react'
-import { Col, Row, Image, Card, ListGroup } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios' //needed to make a request to clientID from server.js(backend)
+import { PayPalButton } from 'react-paypal-button-v2' //bringing in the PayPal button that was installed.
+import {
+  Col,
+  Row,
+  Image,
+  Card,
+  ListGroup,
+  ListGroupItem,
+} from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { Link } from 'react-router-dom'
-import { getOrderDetail } from '../actions/ordersActions'
+import { getOrderDetail, payForOrder } from '../actions/ordersActions'
+import { PAY_ORDER_RESET } from '../constants/ordersConstants'
 
 const OrderScreen = ({ match }) => {
   //pass in match to obtain the order id
   const orderId = match.params.id
   //create a variable for the id and set to match.params.id
+
+  //sdkReady    //setSdkReady
+  const [sdkPrepared, setSdkPrepared] = useState(false) //set as false as a default value
 
   const dispatch = useDispatch()
 
@@ -18,6 +31,11 @@ const OrderScreen = ({ match }) => {
   //bring in createOrder state -> once createAnOrder is dispatched, it will send everything down
   //through the state -> need to bring it in
   //if success is true, then trigger placeOrderHandler and dispatch createAnOrder.(ready for redirect -> useEffect)
+
+  //FROM reducer 8:40
+  const payOrder = useSelector((state) => state.payOrder) //getting from the state createOrder
+  const { Loading: loadingPay, Success: successPay } = payOrder
+  //loading         //success
 
   if (!loading) {
     const includeDecimals = (number) => {
@@ -40,12 +58,40 @@ const OrderScreen = ({ match }) => {
   }
 
   useEffect(() => {
-    //checks for the order and also makes sure that the order ID matches the ID that's in the URL
-    //if not, then dispatch getOrderDetails() which will fetch the most recent order.
-    if (!order || order._id !== orderId) {
-      dispatch(getOrderDetail(orderId))
+    const addingPayPalScript = async () => {
+      const { data: clientID } = await axios.get('/api/config/paypal')
+      //console.log(clientID)//can be seen in the console
+      //fetch clientID from the backend
+      const Script = document.createElement('Script')
+      Script.type = 'text/javascript'
+      Script.src = `https://www.paypal.com/sdk/js?client-id=${clientID}`
+      Script.async = true
+      Script.onload = () => {
+        setSdkPrepared(true)
+      }
+      document.body.appendChild(Script)
     }
-  }, [dispatch, orderId]) //required dependencies
+
+    //9:50
+    //if not, then dispatch getOrderDetails() which will fetch the most recent order.
+    if (!order || successPay) {
+      dispatch({ type: PAY_ORDER_RESET }) //usually use actions folder because it's neater --> if not used, once you pay, it'll keep refreshing
+      dispatch(getOrderDetail(orderId))
+    } else if (!order.isPaid) {
+      if (!window.paypal) {
+        addingPayPalScript()
+      } else {
+        setSdkPrepared(true)
+      }
+    }
+  }, [dispatch, order, orderId, successPay]) //required dependencies
+
+  const successfulPaymentHandler = (paymentResult) => {
+    //get paymentResult from PayPal
+    console.log(paymentResult)
+    dispatch(payForOrder(orderId, paymentResult))
+    //WAS payOrder ... 16:00
+  }
 
   //loading icon spinning whilst waiting for data to be importted else ...
   return loading ? (
@@ -192,6 +238,20 @@ const OrderScreen = ({ match }) => {
                   {/*total price including all Tax's and Fee's*/}
                 </Row>
               </ListGroup.Item>
+              {/* order is not paid*/}
+              {!order.isPaid && (
+                <ListGroupItem>
+                  {loadingPay && <Loader />}
+                  {!sdkPrepared ? (
+                    <Loader />
+                  ) : (
+                    <PayPalButton
+                      amount={order.totalPrice}
+                      onSuccess={successfulPaymentHandler}
+                    />
+                  )}
+                </ListGroupItem>
+              )}
             </ListGroup>
           </Card>
         </Col>

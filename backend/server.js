@@ -25,6 +25,11 @@ app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', ordersRoute) //mounting the imported ordersRoute from ordersRoute.js
 
+//USE THIS ROUTE WHEN READY TO MAKE PAYMENT --> HIT THIS ROUTE AND FET THE CLIENT ID
+app.get('/api/config/paypal', (req, res) =>
+  res.send(process.env.PAYPAL_CLIENT_ID)
+)
+
 app.use(notFound)
 
 app.use(errorHandler)
