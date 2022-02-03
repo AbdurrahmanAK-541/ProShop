@@ -5,10 +5,12 @@ import {
   registerUser,
   getUserProfile,
   updateUserProfile,
+  getAppUsers,
 } from '../controllers/UserController.js'
-import { protector } from '../middleware/AuthenticationMiddleware.js'
+import { protector, adminOnly } from '../middleware/AuthenticationMiddleware.js'
 
-router.route('/').post(registerUser)
+router.route('/').post(registerUser).get(protector, adminOnly, getAppUsers)
+//pass in the protector and adminOnly middleWare --> only admin users can get appUsers information
 router.post('/login', authenticateUser)
 // '/login' will be hooked to '/users'
 router
