@@ -9,6 +9,9 @@ import {
   PAY_ORDER_REQUEST,
   PAY_ORDER_SUCCESS,
   PAY_ORDER_FAIL,
+  USER_ORDER_LIST_FAIL,
+  USER_ORDER_LIST_SUCCESS,
+  USER_ORDER_LIST_REQUEST,
 } from '../constants/ordersConstants'
 
 //import to store.js
@@ -83,6 +86,28 @@ export const payOrderReducer = (state = {}, action) => {
       }
     case PAY_ORDER_RESET:
       return {}
+    default:
+      return state
+  }
+}
+
+export const userOrderListReducer = (state = { orders: [] }, action) => {
+  //order[]
+  //set the state to an empty object
+  switch (action.type) {
+    case USER_ORDER_LIST_REQUEST:
+      return {
+        loading: true,
+      }
+    case USER_ORDER_LIST_SUCCESS:
+      return {
+        loading: false, //no longer required hence why it's set to false
+        orders: action.payload, //order will be the action.payload displayed
+      }
+    case USER_ORDER_LIST_FAIL:
+      return {
+        error: action.payload, //error will be action.payload
+      }
     default:
       return state
   }

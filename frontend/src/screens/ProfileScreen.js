@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Row, Col, Button } from 'react-bootstrap'
+import { Form, Row, Col, Button, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
+import { listUserOrder } from '../actions/ordersActions'
+//import { LinkContainer } from 'react-router-bootstrap'
+import { NavLink } from 'react-router-dom'
 
 const ProfileScreen = ({ location, history }) => {
   const [email, setEmail] = useState('')
@@ -23,6 +26,9 @@ const ProfileScreen = ({ location, history }) => {
   const userUpdatedProfile = useSelector((state) => state.userUpdatedProfile) //used to check if user profile successfully
   const { success } = userUpdatedProfile // get the success value from the update profile state
 
+  const userOrderList = useSelector((state) => state.userOrderList) //get user details from the state. (reducer/store)
+  const { loading: loadingOrders, error: errorOrders, orders } = userOrderList //get loading, error and user from the state
+
   useEffect(() => {
     if (!userInformation) {
       // if there's no user information, then the user is not logged in
@@ -32,6 +38,7 @@ const ProfileScreen = ({ location, history }) => {
       if (!user.name) {
         //check for the user name coming from UserDetails
         dispatch(getUserDetails('profile')) //userDetails gets in an id but in this case will be taking in 'profile' and that's what will be passed in the URL 10:22
+        dispatch(listUserOrder()) //can be seen in the redux state
       } else {
         //or if we do have the user...
         setName(user.name) //display the user name
@@ -105,13 +112,66 @@ const ProfileScreen = ({ location, history }) => {
             ></Form.Control>
           </Form.Group>
 
-          <Button type='submit' variant='primary'>
+          <Button
+            className='justify-content-center mt-3'
+            type='submit'
+            variant='primary'
+          >
             Update Profile
           </Button>
         </Form>
       </Col>
       <Col md={9}>
         <h2>Orders</h2>
+        {loadingOrders ? (
+          <Loader />
+        ) : errorOrders ? (
+          <Message variant='danger'>{errorOrders}</Message>
+        ) : (
+          <Table striped bordered hover responsive className='table-sm'>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>DATE</th>
+                <th>TOTAL</th>
+                <th>PAID</th>
+                <th>DELIVERED</th>
+                <th>DETAILS</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>{order._id}</td>
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>{order.totalPrice}</td>
+                  <td>
+                    {order.isPaid ? (
+                      order.paidAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                  <td>
+                    {order.isDelivered ? (
+                      order.deliveredAt.substring(0, 10)
+                    ) : (
+                      <i className='fas fa-times' style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                  <td>
+                    <NavLink to={`/order/${order._id}`}>
+                      <Button className='btn-sm' variant='dark'>
+                        Details
+                      </Button>
+                    </NavLink>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Col>
     </Row>
   )
