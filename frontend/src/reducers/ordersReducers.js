@@ -12,6 +12,7 @@ import {
   USER_ORDER_LIST_FAIL,
   USER_ORDER_LIST_SUCCESS,
   USER_ORDER_LIST_REQUEST,
+  USER_ORDER_LIST_RESET,
 } from '../constants/ordersConstants'
 
 //import to store.js
@@ -108,6 +109,8 @@ export const userOrderListReducer = (state = { orders: [] }, action) => {
       return {
         error: action.payload, //error will be action.payload
       }
+    case USER_ORDER_LIST_RESET:
+      return { orders: [] }
     default:
       return state
   }

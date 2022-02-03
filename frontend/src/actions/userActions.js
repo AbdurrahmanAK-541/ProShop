@@ -13,7 +13,9 @@ import {
   USER_UPDATED_PROFILE_REQUEST,
   USER_UPDATED_PROFILE_SUCCESS,
   USER_UPDATED_PROFILE_FAIL,
+  USER_DETAILS_RESET,
 } from '../constants/userConstants'
+import { USER_ORDER_LIST_RESET } from '../constants/ordersConstants'
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -53,6 +55,8 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInformation') //removes the user information from local storage when logging out
   dispatch({ type: USER_LOGOUT }) //DISPATCH = Action completed
+  dispatch({ type: USER_ORDER_LIST_RESET }) //DISPATCH = Action completed
+  dispatch({ type: USER_DETAILS_RESET }) //DISPATCH = Action completed
 }
 export const register = (name, email, password) => async (dispatch) => {
   try {
