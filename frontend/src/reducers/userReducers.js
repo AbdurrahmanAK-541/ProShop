@@ -17,6 +17,9 @@ import {
   LIST_OF_USERS_SUCCESS,
   LIST_OF_USERS_FAIL,
   LIST_OF_USERS_RESET,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAIL,
 } from '../constants/userConstants'
 
 export const userLoginReducer = (state = {}, action) => {
@@ -92,6 +95,21 @@ export const listOfUsersReducer = (state = { users: [] }, action) => {
     case LIST_OF_USERS_RESET:
       return { users: [] }
 
+    default:
+      return state
+  }
+}
+
+export const deleteUserReducer = (state = {}, action) => {
+  //empty state to begin with
+  switch (action.type) {
+    case DELETE_USER_REQUEST:
+      return { loading: true }
+    case DELETE_USER_SUCCESS:
+      return { loading: false, success: true }
+    //upon success, set the user infotmation to payload and a success value to true to use in the screen
+    case DELETE_USER_FAIL:
+      return { loading: false, error: action.payload }
     default:
       return state
   }

@@ -6,6 +6,7 @@ import {
   getUserProfile,
   updateUserProfile,
   getAppUsers,
+  deleteAppUser,
 } from '../controllers/UserController.js'
 import { protector, adminOnly } from '../middleware/AuthenticationMiddleware.js'
 
@@ -18,5 +19,10 @@ router
   .get(protector, getUserProfile)
   .put(protector, updateUserProfile)
 //middleware implemented by passing it through as a first argument
+
+router.route('/:id').delete(protector, adminOnly, deleteAppUser)
+//added the id route at the bottom to not mess up the router
+//pass in the protector and adminOnly middleware as its a private and restricte route.
+//set it to deleteAppUser --> only admin accounts can delete users.
 
 export default router

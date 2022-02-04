@@ -18,6 +18,9 @@ import {
   LIST_OF_USERS_SUCCESS,
   LIST_OF_USERS_FAIL,
   LIST_OF_USERS_RESET,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAIL,
 } from '../constants/userConstants'
 import { USER_ORDER_LIST_RESET } from '../constants/ordersConstants'
 
@@ -215,6 +218,42 @@ export const usersList = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: LIST_OF_USERS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const userDelete = (id) => async (dispatch, getState) => {
+  //pass in the id to know which user to delete.
+  //get user information from getState which constains the user token
+  try {
+    dispatch({
+      type: DELETE_USER_REQUEST,
+    })
+
+    const {
+      userLogin: { userInformation },
+    } = getState()
+    //destrucutre from getState function to get userLogin.
+    //destructure userLogin to attain the user's information which is in user login => gives access to the logged in user object
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInformation.token}`, //pass the token in the headers as Authorization and set it to Bearer
+      },
+    }
+
+    const { data } = await axios.delete(`/api/users/${id}`, config)
+    //PUT request to /api/users/profile (backend)
+    //pass in the user object (user data) as a second argument as it's the data that's updated
+
+    dispatch({ type: DELETE_USER_SUCCESS })
+  } catch (error) {
+    dispatch({
+      type: DELETE_USER_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
