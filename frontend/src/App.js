@@ -13,6 +13,7 @@ import AddressScreen from './screens/AddressScreen'
 import PaymentMethodScreen from './screens/PaymentMethodScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import OrderScreen from './screens/OrderScreen'
+import ListOfUsersScreen from './screens/ListOfUsersScreen'
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
             path='/cart/:id?'
             component={CartScreen} /*id is optional hence why I added a ?*/
           />
+          <Route path='/admin/userList' component={ListOfUsersScreen} />
           <Route path='/' component={HomeScreen} exact />
         </Container>
       </main>
