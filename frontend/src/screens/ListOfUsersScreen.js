@@ -26,7 +26,7 @@ const ListOfUsersScreen = ({ history }) => {
     } else {
       history.push('/login')
     }
-  }, [dispatch, history, successfulyDeleted])
+  }, [dispatch, history, userInformation, successfulyDeleted])
   //dependencies. pass in successfully deleted because of changes, useEffect needs to run again so the usersList reloads
 
   const deleteUserHandler = (id) => {
@@ -77,7 +77,7 @@ const ListOfUsersScreen = ({ history }) => {
                   )}
                 </td>
                 <td>
-                  <NavLink to={`/user/${user._id}/edit`}>
+                  <NavLink to={`/admin/user/${user._id}/editUsers`}>
                     <Button variant='dark' className='btn-sm'>
                       <i className='fas fa-edit'></i>
                     </Button>

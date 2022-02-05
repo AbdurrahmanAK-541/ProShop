@@ -246,7 +246,7 @@ export const userDelete = (id) => async (dispatch, getState) => {
       },
     }
 
-    const { data } = await axios.delete(`/api/users/${id}`, config)
+    await axios.delete(`/api/users/${id}`, config)
     //PUT request to /api/users/profile (backend)
     //pass in the user object (user data) as a second argument as it's the data that's updated
 
