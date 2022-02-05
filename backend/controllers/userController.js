@@ -105,6 +105,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
+  //finds the logged in user...
   //whatever is passed in as the token contains the id which fetches the user in the middleware
   //and assigning it to req.user => able to use in any protected route we choose
   if (user) {
@@ -158,6 +159,52 @@ const deleteAppUser = asyncHandler(async (req, res) => {
   res.json(AppUsers)
 })
 
+// @description  Get a user By their Id
+// @route        GET /api/users/:id
+// @access       Private/protected + admin
+
+const getAppUserById = asyncHandler(async (req, res) => {
+  const AppUser = await User.findById(req.params.id).select('-password') //the id in the url + no password
+
+  if (AppUser) {
+    res.json(AppUser)
+  } else {
+    res.status(404)
+    throw new Error('User Does Not Exist Or Cannot Be Found')
+  }
+})
+
+// @description  Update the user
+// @route        PUT /api/users/:id
+// @access       Private (need to be logged in)+ admin
+
+const updateAppUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id)
+  //the user is found using the id in the URL
+  //whatever is passed in as the token contains the id which fetches the user in the middleware
+  //and assigning it to req.user => able to use in any protected route we choose
+  if (user) {
+    //if user is there
+    user.name = req.body.name || user.name //set the user.name to the new request inputted (body) name or normal user name
+    user.email = req.body.email || user.email //set the user.email to the new request inputted (body) email or normal user email
+    user.isAdmin = req.body.isAdmin || user.isAdmin //3:40??
+
+    const updatedUserDetails = await user.save()
+
+    res.json({
+      _id: updatedUserDetails._id,
+      name: updatedUserDetails.name,
+      email: updatedUserDetails.email,
+      isAdmin: updatedUserDetails.isAdmin,
+      //after we validation, if the user exists, it will be put in the 'user' variable
+      //if it matches => we will return the data + web token thats generated that includes the user id embedded as the payload
+    })
+  } else {
+    res.status(404)
+    throw new Error('User can not be found')
+  }
+})
+
 export {
   authenticateUser,
   registerUser,
@@ -165,4 +212,6 @@ export {
   updateUserProfile,
   getAppUsers,
   deleteAppUser,
+  getAppUserById,
+  updateAppUser,
 }
