@@ -4,7 +4,7 @@ import { Table, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { usersList } from '../actions/userActions'
+import { usersList, userDelete } from '../actions/userActions'
 
 const ListOfUsersScreen = ({ history }) => {
   //bring in history from the props
@@ -17,16 +17,24 @@ const ListOfUsersScreen = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin) //userLogin reducers being brought in from the state through useSelector
   const { userInformation } = userLogin
 
+  const deleteUser = useSelector((state) => state.deleteUser) //deleteUser reducers being brought in from the state through useSelector
+  const { success: successfulyDeleted } = deleteUser
+
   useEffect(() => {
     if (userInformation && userInformation.isAdmin) {
       dispatch(usersList()) //action being dispatched
     } else {
       history.push('/login')
     }
-  }, [dispatch, history]) //dependencies
+  }, [dispatch, history, successfulyDeleted])
+  //dependencies. pass in successfully deleted because of changes, useEffect needs to run again so the usersList reloads
 
   const deleteUserHandler = (id) => {
-    console.log('deleteUser')
+    if (window.confirm('Are You Sure You Want To Delete This User?')) {
+      dispatch(userDelete(id))
+    }
+    //Adding a confirmation before deleting
+    //pass in the userDelete action. pass in the id that will also be passed in the Handler
   }
 
   return (
