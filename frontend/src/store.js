@@ -4,6 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import {
   productListReducer,
   productDetailsReducer,
+  deleteProductsReducer,
 } from './reducers/productReducers'
 import { cartReducer } from './reducers/cartReducers' /*imported so that it can be used*/
 import {
@@ -27,7 +28,9 @@ const reducer = combineReducers({
   //user reducers
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  deleteProduct: deleteProductsReducer,
   cart: cartReducer /*naming conventions: Call the reducer to whatever its called in the state then the reducers*/,
+  //user reducers
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userDetails: userDetailsReducer, //bringing in userDetailsReducer which is now visible in the state
@@ -35,7 +38,6 @@ const reducer = combineReducers({
   listOfUsers: listOfUsersReducer, //Bringing in listOfUsersReducer which is now visible in the state
   deleteUser: deleteUserReducer,
   editUser: editUserReducer,
-
   //order reducers
   orderCreate: orderCreateReducer, //bringing in createOrderReducer which is now visible in the sate -> now create an action :)
   orderDetail: orderDetailReducer,

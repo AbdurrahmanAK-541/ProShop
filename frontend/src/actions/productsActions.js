@@ -6,6 +6,9 @@ import {
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
+  DELETE_PRODUCT_REQUEST,
+  DELETE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT_FAIL,
 } from '../constants/productConstants'
 
 export const listProducts = () => async (dispatch) => {
@@ -42,6 +45,45 @@ export const listProductDetails = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const productDelete = (id) => async (dispatch, getState) => {
+  //takes in the product id that is to be deleted then passes in getState as token is needed
+
+  try {
+    dispatch({
+      type: DELETE_PRODUCT_REQUEST, //DISPATCH the DELETE product request and set loading to true
+    })
+
+    const {
+      userLogin: { userInformation }, //this is where user info is attained
+    } = getState()
+    //destrucutre from getState function to get userLogin.
+    //destructure userLogin to attain the user's information which is in user login => gives access to the logged in user object
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInformation.token}`, //pass the token in the headers as Authorization and set it to Bearer
+      },
+    }
+
+    await axios.delete(`/api/products/${id}`, config)
+    //DELETE request to /api/orders/id (backend)
+    //pass in the paymentResult that will come from PayPal and config to receive token for the id
+
+    dispatch({
+      type: DELETE_PRODUCT_SUCCESS, //Selete product successfully...
+    })
+  } catch (error) {
+    dispatch({
+      type: DELETE_PRODUCT_FAIL, // order creation failed
+      //error message is passed in as the payload.
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

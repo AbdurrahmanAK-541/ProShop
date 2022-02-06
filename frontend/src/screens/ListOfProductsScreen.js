@@ -4,7 +4,7 @@ import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listProducts } from '../actions/productsActions'
+import { listProducts, productDelete } from '../actions/productsActions'
 
 const ListOfProductsScreen = ({ match, history }) => {
   //bring in history from the props
@@ -13,6 +13,13 @@ const ListOfProductsScreen = ({ match, history }) => {
   const productList = useSelector((state) => state.productList) //productList reducers being brought in from the state through useSelector
   const { loading, error, products } = productList
   //useres will be mapped in <tbody>
+
+  const deleteProduct = useSelector((state) => state.deleteProduct) //deleteProduct reducers being brought in from the state through useSelector
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successfullyDeleted,
+  } = deleteProduct
 
   const userLogin = useSelector((state) => state.userLogin) //userLogin reducers being brought in from the state through useSelector
   const { userInformation } = userLogin
@@ -23,12 +30,13 @@ const ListOfProductsScreen = ({ match, history }) => {
     } else {
       history.push('/login')
     }
-  }, [dispatch, history, userInformation])
+  }, [dispatch, history, userInformation, successfullyDeleted])
   //dependencies. pass in successfully deleted because of changes, useEffect needs to run again so the usersList reloads
+  //pass in succDele as a dependecy to the useEffect so that when it happens, it runs again and lists the products and the deleted product will be gone.
 
   const deleteUserHandler = (id) => {
     if (window.confirm('Are You Sure You Want To Delete This Product?')) {
-      //delete Products
+      dispatch(productDelete(id))
     }
     //Adding a confirmation before deleting
     //pass in the userDelete action. pass in the id that will also be passed in the Handler
@@ -51,6 +59,8 @@ const ListOfProductsScreen = ({ match, history }) => {
           <i className='fas fa-plus'></i> Create Product
         </Button>
       </Col>
+      {loadingDelete && <Loader />}
+      {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
 
       {loading ? (
         <Loader />
