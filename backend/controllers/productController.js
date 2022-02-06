@@ -26,6 +26,20 @@ const getProductById = asyncHandler(async (req, res) => {
   }
 })
 
-//fixed an error: accidentally duplicated res.json(products)
+// @description  Delete products
+// @route        DELETE /api/products/:id
+// @access       private + adminOnly
 
-export { getProductById, getProducts }
+const deleteProducts = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id)
+
+  if (product) {
+    await product.remove()
+    res.json({ message: 'Product Deleted' })
+  } else {
+    res.status(404)
+    throw new Error('Product not found')
+  }
+})
+
+export { getProductById, getProducts, deleteProducts }
