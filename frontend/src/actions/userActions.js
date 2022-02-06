@@ -21,6 +21,9 @@ import {
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAIL,
+  EDIT_USER_SUCCESS,
+  EDIT_USER_REQUEST,
+  EDIT_USER_FAIL,
 } from '../constants/userConstants'
 import { USER_ORDER_LIST_RESET } from '../constants/ordersConstants'
 
@@ -254,6 +257,46 @@ export const userDelete = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: DELETE_USER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const userEdit = (user) => async (dispatch, getState) => {
+  //pass in the user object
+  //get user information from getState which constains the user token
+  try {
+    dispatch({
+      type: EDIT_USER_REQUEST,
+    })
+
+    const {
+      userLogin: { userInformation },
+    } = getState()
+    //destrucutre from getState function to get userLogin.
+    //destructure userLogin to attain the user's information which is in user login => gives access to the logged in user object
+
+    const config = {
+      'Content-Type': 'application/json',
+      headers: {
+        Authorization: `Bearer ${userInformation.token}`, //pass the token in the headers as Authorization and set it to Bearer
+      },
+    }
+
+    const { data } = await axios.put(`/api/users/${user._id}`, user, config)
+    //passed in the user object.
+    //PUT request to /api/users/:id (backend)
+    //pass in the user object (user data) as a second argument as it's the data that's updated
+
+    dispatch({ type: EDIT_USER_SUCCESS })
+
+    dispatch({ type: USER_DETAILS_SUCCESS, payload: data })
+  } catch (error) {
+    dispatch({
+      type: EDIT_USER_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

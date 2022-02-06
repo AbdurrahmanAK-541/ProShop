@@ -20,6 +20,10 @@ import {
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAIL,
+  EDIT_USER_REQUEST,
+  EDIT_USER_SUCCESS,
+  EDIT_USER_FAIL,
+  EDIT_USER_RESET,
 } from '../constants/userConstants'
 
 export const userLoginReducer = (state = {}, action) => {
@@ -110,6 +114,26 @@ export const deleteUserReducer = (state = {}, action) => {
     //upon success, set the user infotmation to payload and a success value to true to use in the screen
     case DELETE_USER_FAIL:
       return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const editUserReducer = (state = { user: {} }, action) => {
+  //empty user object passed into the state.
+  switch (action.type) {
+    case EDIT_USER_REQUEST:
+      return { loading: true }
+    case EDIT_USER_SUCCESS:
+      return { loading: false, success: true }
+    //upon success, set the user infotmation to payload and a success value to true to use in the screen
+    case EDIT_USER_FAIL:
+      return { loading: false, error: action.payload }
+    case EDIT_USER_RESET:
+      return {
+        user: {},
+        //return the original state. (state object with an empty user)
+      }
     default:
       return state
   }

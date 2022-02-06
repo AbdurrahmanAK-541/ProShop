@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import { getUserDetails } from '../actions/userActions'
+import { getUserDetails, userEdit } from '../actions/userActions'
+import { EDIT_USER_RESET } from '../constants/userConstants'
 import { Link } from 'react-router-dom'
 
 const EditUserScreen = ({ match, history }) => {
@@ -19,21 +20,36 @@ const EditUserScreen = ({ match, history }) => {
   const userDetails = useSelector((state) => state.userDetails)
   const { loading, error, user } = userDetails
 
+  const editUser = useSelector((state) => state.editUser)
+  const {
+    loading: loadingEdit,
+    error: errorEdit,
+    success: successfulEdit,
+  } = editUser
+
   useEffect(() => {
-    if (!user.name || user._id !== userID) {
-      //check if the user doesnt exist or if the user id is not equal to the userID that is coming from the url
-      dispatch(getUserDetails(userID))
+    //check for the successfulEdit of the user before because if we can edit then we want to reset the user/edit state then
+    //redirect to the userList once it has been updated.
+    if (successfulEdit) {
+      dispatch({ type: EDIT_USER_RESET })
+      history.push('/admin/userList')
     } else {
-      //if the user does exist then set the following fields..
-      setName(user.name)
-      setEmail(user.email)
-      setIsAdmin(user.isAdmin)
+      if (!user.name || user._id !== userID) {
+        //check if the user doesnt exist or if the user id is not equal to the userID that is coming from the url
+        dispatch(getUserDetails(userID))
+      } else {
+        //if the user does exist then set the following fields..
+        setName(user.name)
+        setEmail(user.email)
+        setIsAdmin(user.isAdmin)
+      }
     }
-  }, [dispatch, user, userID]) //passing in the dependencies.
+  }, [dispatch, history, user, userID, successfulEdit]) //passing in the dependencies.
   //pass in the user to the useEffect dependencies so that it updates
 
   const submitHandler = (e) => {
     e.preventDefault()
+    dispatch(userEdit({ _id: userID, name, email, isAdmin }))
   }
 
   return (
@@ -43,6 +59,8 @@ const EditUserScreen = ({ match, history }) => {
       </Link>
       <FormContainer>
         <h1>Edit User Details</h1>
+        {loadingEdit && <Loader />}
+        {errorEdit && <Message variant='danger'>{errorEdit}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (

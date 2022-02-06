@@ -13,6 +13,7 @@ import {
   userUpdatedProfileReducer,
   listOfUsersReducer,
   deleteUserReducer,
+  editUserReducer,
 } from './reducers/userReducers'
 import {
   orderCreateReducer,
@@ -21,8 +22,9 @@ import {
   userOrderListReducer,
 } from './reducers/ordersReducers'
 
+//viewed in the state
 const reducer = combineReducers({
-  //viewed in the state
+  //user reducers
   productList: productListReducer,
   productDetails: productDetailsReducer,
   cart: cartReducer /*naming conventions: Call the reducer to whatever its called in the state then the reducers*/,
@@ -32,12 +34,12 @@ const reducer = combineReducers({
   userUpdatedProfile: userUpdatedProfileReducer, //bringing in userDetailsReducer which is now visible in the state
   listOfUsers: listOfUsersReducer, //Bringing in listOfUsersReducer which is now visible in the state
   deleteUser: deleteUserReducer,
+  editUser: editUserReducer,
 
+  //order reducers
   orderCreate: orderCreateReducer, //bringing in createOrderReducer which is now visible in the sate -> now create an action :)
   orderDetail: orderDetailReducer,
-  //was createOrder : createOrderReducer
   payOrder: payOrderReducer,
-  //set as orderPay : orderPayReducer
   userOrderList: userOrderListReducer,
 })
 
