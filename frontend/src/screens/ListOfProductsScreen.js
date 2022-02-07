@@ -4,7 +4,12 @@ import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listProducts, productDelete } from '../actions/productsActions'
+import {
+  listProducts,
+  productDelete,
+  productCreate,
+} from '../actions/productsActions'
+import { CREATE_PRODUCT_RESET } from '../constants/productConstants'
 
 const ListOfProductsScreen = ({ match, history }) => {
   //bring in history from the props
@@ -21,16 +26,37 @@ const ListOfProductsScreen = ({ match, history }) => {
     success: successfullyDeleted,
   } = deleteProduct
 
+  const createProduct = useSelector((state) => state.createProduct) //createProduct reducers being brought in from the state through useSelector
+  const {
+    loading: loadingCreate,
+    error: errorCreate,
+    success: successfullyCreated,
+    product: createdProduct,
+  } = createProduct
+
   const userLogin = useSelector((state) => state.userLogin) //userLogin reducers being brought in from the state through useSelector
   const { userInformation } = userLogin
 
   useEffect(() => {
-    if (userInformation && userInformation.isAdmin) {
-      dispatch(listProducts()) //action being dispatched
-    } else {
+    dispatch({ type: CREATE_PRODUCT_RESET })
+
+    if (!userInformation.isAdmin) {
       history.push('/login')
     }
-  }, [dispatch, history, userInformation, successfullyDeleted])
+
+    if (successfullyCreated) {
+      history.push(`/admin/product/${createdProduct._id}/editProducts`)
+    } else {
+      dispatch(listProducts())
+    }
+  }, [
+    dispatch,
+    history,
+    userInformation,
+    successfullyDeleted,
+    successfullyCreated,
+    createdProduct,
+  ])
   //dependencies. pass in successfully deleted because of changes, useEffect needs to run again so the usersList reloads
   //pass in succDele as a dependecy to the useEffect so that when it happens, it runs again and lists the products and the deleted product will be gone.
 
@@ -42,8 +68,8 @@ const ListOfProductsScreen = ({ match, history }) => {
     //pass in the userDelete action. pass in the id that will also be passed in the Handler
   }
 
-  const createProductsHandler = (product) => {
-    console.log('create products')
+  const createProductsHandler = () => {
+    dispatch(productCreate()) //dispatching the action
   }
 
   return (
@@ -61,6 +87,9 @@ const ListOfProductsScreen = ({ match, history }) => {
       </Col>
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
+
+      {loadingCreate && <Loader />}
+      {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
 
       {loading ? (
         <Loader />
