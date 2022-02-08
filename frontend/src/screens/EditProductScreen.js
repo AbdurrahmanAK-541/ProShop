@@ -166,7 +166,7 @@ const EditProductScreen = ({ match, history }) => {
               type='submit'
               variant='primary'
             >
-              Update User Profile
+              Update Product
             </Button>
           </Form>
         )}
