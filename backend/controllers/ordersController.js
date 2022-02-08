@@ -100,7 +100,7 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 
 // @description  Get the user orders
 // @route        GET /api/orders/userOrders
-// @access       Private/Protected
+// @access       Private/Protected + admin only
 
 const getUserOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({ user: req.user._id }) //only find because we get more than one
@@ -108,4 +108,20 @@ const getUserOrders = asyncHandler(async (req, res) => {
   //pass in an object where we find orders where the user is = to the logged in user.
 })
 
-export { addOrderedItems, getOrderById, updateOrderToPaid, getUserOrders } //export so it can be used in the ordersRoute.js
+// @description  Get all the  orders
+// @route        GET /api/orders
+// @access       Private/Protected + admin only
+
+const getAllOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({}).populate('user', 'id, name') //only find because we get more than one
+  res.json(orders)
+  //pass in an object where we find orders where the user is = to the logged in user.
+})
+
+export {
+  addOrderedItems,
+  getOrderById,
+  updateOrderToPaid,
+  getUserOrders,
+  getAllOrders,
+} //export so it can be used in the ordersRoute.js

@@ -13,6 +13,10 @@ import {
   USER_ORDER_LIST_SUCCESS,
   USER_ORDER_LIST_REQUEST,
   USER_ORDER_LIST_RESET,
+  ALL_ORDERS_LIST_REQUEST,
+  ALL_ORDERS_LIST_SUCCESS,
+  ALL_ORDERS_LIST_FAIL,
+  ALL_ORDERS_LIST_RESET,
 } from '../constants/ordersConstants'
 
 //import to store.js
@@ -110,6 +114,30 @@ export const userOrderListReducer = (state = { orders: [] }, action) => {
         error: action.payload, //error will be action.payload
       }
     case USER_ORDER_LIST_RESET:
+      return { orders: [] }
+    default:
+      return state
+  }
+}
+
+export const allOrdersListReducer = (state = { orders: [] }, action) => {
+  //order[]
+  //set the state to an empty object
+  switch (action.type) {
+    case ALL_ORDERS_LIST_REQUEST:
+      return {
+        loading: true,
+      }
+    case ALL_ORDERS_LIST_SUCCESS:
+      return {
+        loading: false, //no longer required hence why it's set to false
+        orders: action.payload, //order will be the action.payload displayed
+      }
+    case ALL_ORDERS_LIST_FAIL:
+      return {
+        error: action.payload, //error will be action.payload
+      }
+    case ALL_ORDERS_LIST_RESET:
       return { orders: [] }
     default:
       return state

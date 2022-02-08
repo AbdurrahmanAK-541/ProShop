@@ -5,10 +5,14 @@ import {
   getOrderById,
   updateOrderToPaid,
   getUserOrders,
+  getAllOrders,
 } from '../controllers/ordersController.js'
-import { protector } from '../middleware/AuthenticationMiddleware.js'
+import { protector, adminOnly } from '../middleware/AuthenticationMiddleware.js'
 
-router.route('/').post(protector, addOrderedItems)
+router
+  .route('/')
+  .post(protector, addOrderedItems)
+  .get(protector, adminOnly, getAllOrders)
 //pass in protector middleware and set it to addOrderedItems
 //if a POST request is sent to /api/orders, we will be able to call addOrderedItems function
 //make sure to add new route file to server.js
