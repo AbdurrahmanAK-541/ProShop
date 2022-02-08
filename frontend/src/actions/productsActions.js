@@ -12,6 +12,9 @@ import {
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAIL,
+  UPDATE_PRODUCT_REQUEST,
+  UPDATE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_FAIL,
 } from '../constants/productConstants'
 
 export const listProducts = () => async (dispatch) => {
@@ -126,6 +129,51 @@ export const productCreate = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: CREATE_PRODUCT_FAIL, // order creation failed
+      //error message is passed in as the payload.
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const productUpdate = (product) => async (dispatch, getState) => {
+  //takes in the product id that is to be deleted then passes in getState as token is needed
+
+  try {
+    dispatch({
+      type: UPDATE_PRODUCT_REQUEST, //DISPATCH the DELETE product request and set loading to true
+    })
+
+    const {
+      userLogin: { userInformation }, //this is where user info is attained
+    } = getState()
+    //destrucutre from getState function to get userLogin.
+    //destructure userLogin to attain the user's information which is in user login => gives access to the logged in user object
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInformation.token}`, //pass the token in the headers as Authorization and set it to Bearer
+      },
+    }
+
+    const { data } = await axios.put(
+      `/api/products/${product._id}`,
+      product,
+      config
+    )
+    //PUT request to /api/orders/id (backend)
+    //pass in the paymentResult that will come from PayPal and config to receive token for the id
+
+    dispatch({
+      type: UPDATE_PRODUCT_SUCCESS, //Selete product successfully...
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PRODUCT_FAIL, // order creation failed
       //error message is passed in as the payload.
       payload:
         error.response && error.response.data.message

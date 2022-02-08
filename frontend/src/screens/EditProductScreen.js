@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import { listProductDetails } from '../actions/productsActions'
+import { listProductDetails, productUpdate } from '../actions/productsActions'
 //import { EDIT_USER_RESET } from '../constants/userConstants'
 import { Link } from 'react-router-dom'
+import { UPDATE_PRODUCT_RESET } from '../constants/productConstants'
 
 const EditProductScreen = ({ match, history }) => {
   const productID = match.params.id
@@ -24,30 +25,55 @@ const EditProductScreen = ({ match, history }) => {
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
+  const updateProduct = useSelector((state) => state.updateProduct)
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successfullyUpdated,
+  } = updateProduct
+  //get loading error etc but already have it from the productDetails ==> rename it.
+
   useEffect(() => {
     //check for the successfulEdit of the user before because if we can edit then we want to reset the user/edit state then
     //redirect to the userList once it has been updated.
 
-    if (!product.name || product._id !== productID) {
-      //check if the product doesnt exist or if the product id is not equal to the productID that is coming from the url
-      dispatch(listProductDetails(productID))
-      //dipatch .. that takes in the productID
+    if (successfullyUpdated) {
+      dispatch({ type: UPDATE_PRODUCT_RESET })
+      history.push('/admin/productList')
     } else {
-      //if the product does exist then set the following fields..
-      setName(product.name)
-      setPrice(product.price)
-      setImage(product.image)
-      setBrand(product.brand)
-      setCategory(product.category)
-      setDescription(product.description)
-      setCountInStock(product.countInStock)
+      if (!product.name || product._id !== productID) {
+        //check if the product doesnt exist or if the product id is not equal to the productID that is coming from the url
+        dispatch(listProductDetails(productID))
+        //dipatch .. that takes in the productID
+      } else {
+        //if the product does exist then set the following fields..
+        setName(product.name)
+        setPrice(product.price)
+        setImage(product.image)
+        setBrand(product.brand)
+        setCategory(product.category)
+        setDescription(product.description)
+        setCountInStock(product.countInStock)
+      }
     }
-  }, [dispatch, history, product, productID]) //passing in the dependencies.
+  }, [dispatch, history, product, productID, successfullyUpdated]) //passing in the dependencies.
   //pass in the user to the useEffect dependencies so that it updates
 
   const submitHandler = (e) => {
     e.preventDefault()
-    //Update Product
+    dispatch(
+      productUpdate({
+        _id: productID,
+        name,
+        price,
+        image,
+        brand,
+        category,
+        description,
+        countInStock,
+      })
+    )
+    //_id object object will contain form fields coming from the component state
   }
 
   return (
@@ -57,6 +83,8 @@ const EditProductScreen = ({ match, history }) => {
       </Link>
       <FormContainer>
         <h1>Edit Products</h1>
+        {loadingUpdate && <Loader />}
+        {errorUpdate && <Message variant='danger'>errorUpdate</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
