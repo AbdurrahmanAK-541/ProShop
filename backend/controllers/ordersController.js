@@ -98,6 +98,26 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
   }
 })
 
+// @description  Update the order status to ''
+// @route        GET /api/orders/:id/deliver
+// @access       Private/Protected
+
+const updateOrderToBeingDelivered = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+
+  if (order) {
+    //if the order is found..
+    order.isDelivered = true //set to true as its set to false by default ...
+    order.deliveredAt = Date.now() //set the paidAt to current date
+
+    const updatedOrder = await order.save()
+    res.json(updatedOrder)
+  } else {
+    res.status(404)
+    throw new Error('Order Cannot Be Found')
+  }
+})
+
 // @description  Get the user orders
 // @route        GET /api/orders/userOrders
 // @access       Private/Protected + admin only
@@ -122,6 +142,7 @@ export {
   addOrderedItems,
   getOrderById,
   updateOrderToPaid,
+  updateOrderToBeingDelivered,
   getUserOrders,
   getAllOrders,
 } //export so it can be used in the ordersRoute.js

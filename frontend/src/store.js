@@ -24,6 +24,7 @@ import {
   payOrderReducer,
   userOrderListReducer,
   allOrdersListReducer,
+  deliverOrderReducer,
 } from './reducers/ordersReducers'
 
 //viewed in the state
@@ -48,6 +49,7 @@ const reducer = combineReducers({
   orderCreate: orderCreateReducer, //bringing in createOrderReducer which is now visible in the sate -> now create an action :)
   orderDetail: orderDetailReducer,
   payOrder: payOrderReducer,
+  deliverOrder: deliverOrderReducer,
   userOrderList: userOrderListReducer,
   allOrdersList: allOrdersListReducer,
 })

@@ -16,6 +16,10 @@ import {
   ALL_ORDERS_LIST_REQUEST,
   ALL_ORDERS_LIST_SUCCESS,
   ALL_ORDERS_LIST_FAIL,
+  DELIVER_ORDER_REQUEST,
+  DELIVER_ORDER_SUCCESS,
+  DELIVER_ORDER_FAIL,
+  DELIVER_ORDER_RESET,
 } from '../constants/ordersConstants'
 
 //import to store.js
@@ -89,6 +93,29 @@ export const payOrderReducer = (state = {}, action) => {
         error: action.payload, //error will be action.payload
       }
     case PAY_ORDER_RESET:
+      return {}
+    default:
+      return state
+  }
+}
+
+export const deliverOrderReducer = (state = {}, action) => {
+  //set the state to an empty object
+  switch (action.type) {
+    case DELIVER_ORDER_REQUEST:
+      return {
+        loading: true,
+      }
+    case DELIVER_ORDER_SUCCESS:
+      return {
+        loading: false, //no longer required hence why it's set to false
+        success: true, //order will be the action.payload
+      }
+    case DELIVER_ORDER_FAIL:
+      return {
+        error: action.payload, //error will be action.payload
+      }
+    case DELIVER_ORDER_RESET:
       return {}
     default:
       return state

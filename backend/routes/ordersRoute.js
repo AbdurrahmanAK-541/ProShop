@@ -4,6 +4,7 @@ import {
   addOrderedItems,
   getOrderById,
   updateOrderToPaid,
+  updateOrderToBeingDelivered,
   getUserOrders,
   getAllOrders,
 } from '../controllers/ordersController.js'
@@ -24,6 +25,9 @@ router.route('/:id').get(protector, getOrderById)
 //pass in protector middleware and set it to getOrderById
 //if a GET request is sent to /api/orders/:id, we will be able to call getOrderById function
 router.route('/:id/pay').put(protector, updateOrderToPaid)
+router
+  .route('/:id/delivered')
+  .put(protector, adminOnly, updateOrderToBeingDelivered)
 //pass in protector middleware and set it to updateOrderToPaid
 
 export default router

@@ -8,15 +8,23 @@ import {
   Card,
   ListGroup,
   ListGroupItem,
+  Button,
 } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { Link } from 'react-router-dom'
-import { getOrderDetail, payForOrder } from '../actions/ordersActions'
-import { PAY_ORDER_RESET } from '../constants/ordersConstants'
+import {
+  getOrderDetail,
+  payForOrder,
+  deliveryForOrder,
+} from '../actions/ordersActions'
+import {
+  PAY_ORDER_RESET,
+  DELIVER_ORDER_RESET,
+} from '../constants/ordersConstants'
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ history, match }) => {
   //pass in match to obtain the order id
   const orderId = match.params.id
   //create a variable for the id and set to match.params.id
@@ -36,6 +44,15 @@ const OrderScreen = ({ match }) => {
   const payOrder = useSelector((state) => state.payOrder) //getting from the state createOrder
   const { Loading: loadingPay, Success: successPay } = payOrder
   //loading         //success
+
+  const deliverOrder = useSelector((state) => state.deliverOrder) //getting from the state createOrder
+  const {
+    Loading: loadingDelivery,
+    Success: successfullyDeliver,
+  } = deliverOrder
+
+  const userLogin = useSelector((state) => state.userLogin) //getting from the state --> contains userInfo
+  const { userInformation } = userLogin //needed to know if a user is admin or not below...83
 
   if (!loading) {
     const includeDecimals = (number) => {
@@ -58,6 +75,11 @@ const OrderScreen = ({ match }) => {
   }
 
   useEffect(() => {
+    //make sure user is logged in..
+    if (!userInformation) {
+      history.push('/login')
+    }
+
     const addingPayPalScript = async () => {
       const { data: clientID } = await axios.get('/api/config/paypal')
       //console.log(clientID)//can be seen in the console
@@ -74,8 +96,10 @@ const OrderScreen = ({ match }) => {
 
     //9:50
     //if not, then dispatch getOrderDetails() which will fetch the most recent order.
-    if (!order || successPay) {
+    if (!order || successPay || successfullyDeliver) {
       dispatch({ type: PAY_ORDER_RESET }) //usually use actions folder because it's neater --> if not used, once you pay, it'll keep refreshing
+      dispatch({ type: DELIVER_ORDER_RESET }) //usually use actions folder because it's neater --> if not used, once you SET to being delivered, it'll keep refreshing
+
       dispatch(getOrderDetail(orderId))
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -84,13 +108,19 @@ const OrderScreen = ({ match }) => {
         setSdkPrepared(true)
       }
     }
-  }, [dispatch, order, orderId, successPay]) //required dependencies
+  }, [dispatch, order, orderId, successPay, successfullyDeliver]) //required dependencies
 
   const successfulPaymentHandler = (paymentResult) => {
     //get paymentResult from PayPal
     console.log(paymentResult)
     dispatch(payForOrder(orderId, paymentResult))
     //WAS payOrder ... 16:00
+  }
+
+  //initiating the delivery handler...
+  //dispatches the delivery action and passes in the order...
+  const successfulDeliveryHandler = () => {
+    dispatch(deliveryForOrder(order))
   }
 
   //loading icon spinning whilst waiting for data to be importted else ...
@@ -252,6 +282,21 @@ const OrderScreen = ({ match }) => {
                   )}
                 </ListGroupItem>
               )}
+              {loadingDelivery && <Loader />}
+              {userInformation &&
+                userInformation.isAdmin &&
+                order.isPaid &&
+                !order.isDelivered && (
+                  <ListGroupItem>
+                    <Button
+                      type='button'
+                      className='btn btn-block'
+                      onClick={successfulDeliveryHandler}
+                    >
+                      Register As Being Delivered
+                    </Button>
+                  </ListGroupItem>
+                )}
             </ListGroup>
           </Card>
         </Col>

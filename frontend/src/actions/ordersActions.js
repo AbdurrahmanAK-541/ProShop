@@ -15,6 +15,9 @@ import {
   ALL_ORDERS_LIST_REQUEST,
   ALL_ORDERS_LIST_SUCCESS,
   ALL_ORDERS_LIST_FAIL,
+  DELIVER_ORDER_REQUEST,
+  DELIVER_ORDER_SUCCESS,
+  DELIVER_ORDER_FAIL,
 } from '../constants/ordersConstants'
 
 //fire off when PLACE ORDER button is pressed. (57 12:00)
@@ -139,6 +142,50 @@ export const payForOrder = (orderId, paymentResult) => async (
   } catch (error) {
     dispatch({
       type: PAY_ORDER_FAIL, // order creation failed
+      //error message is passed in as the payload.
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const deliveryForOrder = (order) => async (dispatch, getState) => {
+  //takes in the order and paymentResult then passes in getState as token is needed
+  //can call the getOrderDetail action that gets the order by id and then send it down through the state
+  try {
+    dispatch({
+      type: DELIVER_ORDER_REQUEST, //DISPATCH the create order request and set loading to true
+    })
+
+    const {
+      userLogin: { userInformation }, //this is where user info is attained
+    } = getState()
+    //destrucutre from getState function to get userLogin.
+    //destructure userLogin to attain the user's information which is in user login => gives access to the logged in user object
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInformation.token}`, //pass the token in the headers as Authorization and set it to Bearer
+      },
+    }
+
+    const { data } = await axios.put(
+      `/api/orders/${order._id}/delivered`,
+      {},
+      config
+    )
+    //PUT request to /api/orders/id/ (backend)
+    //pass in the empty object.
+
+    dispatch({
+      type: DELIVER_ORDER_SUCCESS, //order is created successfully...
+      payload: data, //data is passed in as the payload through the state into the order state (in orderPage.js)
+    })
+  } catch (error) {
+    dispatch({
+      type: DELIVER_ORDER_FAIL, // order creation failed
       //error message is passed in as the payload.
       payload:
         error.response && error.response.data.message
