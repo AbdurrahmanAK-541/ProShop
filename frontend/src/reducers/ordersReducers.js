@@ -16,7 +16,6 @@ import {
   ALL_ORDERS_LIST_REQUEST,
   ALL_ORDERS_LIST_SUCCESS,
   ALL_ORDERS_LIST_FAIL,
-  ALL_ORDERS_LIST_RESET,
 } from '../constants/ordersConstants'
 
 //import to store.js
@@ -137,8 +136,6 @@ export const allOrdersListReducer = (state = { orders: [] }, action) => {
       return {
         error: action.payload, //error will be action.payload
       }
-    case ALL_ORDERS_LIST_RESET:
-      return { orders: [] }
     default:
       return state
   }

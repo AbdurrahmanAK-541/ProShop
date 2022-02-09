@@ -208,7 +208,7 @@ export const listAllOrders = () => async (dispatch, getState) => {
       },
     }
 
-    const { data } = await axios.get(`/api/orders/userOrders`, config)
+    const { data } = await axios.get(`/api/orders`, config)
     //PUT request to /api/orders/id/pay (backend)
     //pass in the paymentResult that will come from PayPal and config to receive token for the id
 
