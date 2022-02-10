@@ -6,7 +6,19 @@ import Product from '../models/productModel.js'
 // @access       Public
 
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({})
+  //query is how you can get query strings when theres a question mark involved e.g in productsActions with ?keyword.
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword, //using regex so the user doesn't have to type the exact specific name of a product.
+          $options: 'i', //case insensitive.. 9:42
+        },
+      }
+    : {} //if it doesnt exist/empty string then use empty curly brackets
+
+  //spread keyword above...
+
+  const products = await Product.find({ ...keyword })
 
   res.json(products)
 })
