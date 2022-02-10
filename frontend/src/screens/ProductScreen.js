@@ -10,6 +10,9 @@ import {
   Button,
   ListGroupItem,
   Form,
+  FormGroup,
+  FormLabel,
+  FormControl,
 } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import { listProductDetails, productReview } from '../actions/productsActions'
@@ -38,13 +41,32 @@ const ProductScreen = ({ history, match }) => {
   const { userInformation } = userLogin
 
   useEffect(() => {
+    if (successfulyReviewProduct) {
+      alert('Review Submitted Successfully')
+      setRating(0) //set badk to the default of 0
+      setComment('') //set the comment back to an empty string
+      dispatch({
+        type: REVIEW_PRODUCT_RESET,
+      })
+    }
     dispatch(listProductDetails(match.params.id))
-  }, [dispatch, match])
+  }, [dispatch, match, successfulyReviewProduct])
 
   const addToCartHandler = () => {
     history.push(
       `/cart/${match.params.id}?qty=${qty}`
     ) /*redirected to the cart, added a query string of qty thats set to quantity selected */
+  }
+
+  const submitHandler = (e) => {
+    e.preventDefault() //since Im submitting a form
+    dispatch(
+      productReview(match.params.id, {
+        //bringing in the product id from the url
+        rating,
+        comment,
+      })
+    ) //bringing in the rating and comment objects from the component state
   }
 
   return (
@@ -156,8 +178,40 @@ const ProductScreen = ({ history, match }) => {
                 ))}
                 <ListGroupItem>
                   <h2> Write a Review </h2>
+                  {errorReviewingProduct && (
+                    <Message variant='danger'>{errorReviewingProduct}</Message>
+                  )}
                   {userInformation ? (
-                    <h1></h1>
+                    <Form onSubmit={submitHandler}>
+                      <FormGroup controlId='rating'>
+                        <FormLabel>Product Rating</FormLabel>
+                        <FormControl
+                          as='select'
+                          value={rating}
+                          onChange={(e) => setRating(e.target.value)}
+                        >
+                          <option value=''>Select An Option</option>
+                          <option value='1'>1 - Poor</option>
+                          <option value='2'>2 - Decent</option>
+                          <option value='3'>3 - Good</option>
+                          <option value='4'>4 - Very Good</option>
+                          <option value='5'>5 - Excellent</option>
+                        </FormControl>
+                      </FormGroup>
+                      <FormGroup controlId='comment'>
+                        <FormLabel> Leave A Comment</FormLabel>
+                        {/*has a value of comment which is in the component state*/}
+                        <FormControl
+                          as='textarea'
+                          row='3'
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                        ></FormControl>
+                      </FormGroup>
+                      <Button type='submit' variant='primary'>
+                        Submit Review
+                      </Button>
+                    </Form>
                   ) : (
                     <Message>
                       Please <Link to='/login'>Login</Link> Before Leaving A

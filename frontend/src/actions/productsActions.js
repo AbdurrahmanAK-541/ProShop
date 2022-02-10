@@ -209,7 +209,7 @@ export const productReview = (productID, review) => async (
       },
     }
 
-    await axios.post(`/api/products/${productID}`, review, config)
+    await axios.post(`/api/products/${productID}/reviews`, review, config)
     //PUT request to /api/orders/id (backend)
     //pass in the review object and the config
 
