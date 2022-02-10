@@ -1,7 +1,9 @@
 import React from 'react'
+import { Route } from 'react-router-dom' //Needed for the SearchBar..
 import { useDispatch, useSelector } from 'react-redux' //reminder: dispatch=action selector=bring something in
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
-import { logout } from '../actions/userActions'
+import SearchBar from './SearchBar' //from different folder use one dot
+import { logout } from '../actions/userActions' //from different folder use two dots
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -18,6 +20,8 @@ const Header = () => {
           <Navbar.Brand href='/'>ProShop</Navbar.Brand>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
+            <Route render={({ history }) => <SearchBar history={history} />} />
+            {/*5:00..86 */}
             <Nav className='ms-auto'>
               <Nav.Link href='/cart'>
                 <i className='fas fa-shopping-cart'></i>Cart

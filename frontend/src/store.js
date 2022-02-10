@@ -30,14 +30,14 @@ import {
 
 //viewed in the state
 const reducer = combineReducers({
-  //user reducers
+  //product reducers
   productList: productListReducer,
   productDetails: productDetailsReducer,
   deleteProduct: deleteProductsReducer,
   createProduct: createProductsReducer,
   updateProduct: updateProductsReducer,
   reviewProduct: reviewProductsReducer,
-
+  //cart reducer
   cart: cartReducer /*naming conventions: Call the reducer to whatever its called in the state then the reducers*/,
   //user reducers
   userLogin: userLoginReducer,

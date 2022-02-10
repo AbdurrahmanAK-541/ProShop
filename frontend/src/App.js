@@ -50,6 +50,8 @@ const App = () => {
             component={EditProductScreen}
           />
           <Route path='/' component={HomeScreen} exact />
+          <Route path='/search/:keyword' component={HomeScreen} />
+          {/*becomes a placeholder for whatever the keyword is.*/}
         </Container>
       </main>
       <Footer />
