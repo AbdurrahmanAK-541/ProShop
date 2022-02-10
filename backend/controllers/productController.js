@@ -10,7 +10,9 @@ const getProducts = asyncHandler(async (req, res) => {
   const keyword = req.query.keyword
     ? {
         name: {
-          $regex: req.query.keyword, //using regex so the user doesn't have to type the exact specific name of a product.
+          $regex: req.query.keyword,
+          //using regex so the user doesn't have to type the exact specific name of a product.
+          //short for regular expressions: used to match character combinations in strings
           $options: 'i', //case insensitive.. 9:42
         },
       }
