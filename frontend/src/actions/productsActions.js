@@ -15,6 +15,9 @@ import {
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_FAIL,
+  REVIEW_PRODUCT_REQUEST,
+  REVIEW_PRODUCT_SUCCESS,
+  REVIEW_PRODUCT_FAIL,
 } from '../constants/productConstants'
 
 export const listProducts = () => async (dispatch) => {
@@ -140,7 +143,6 @@ export const productCreate = (id) => async (dispatch, getState) => {
 
 export const productUpdate = (product) => async (dispatch, getState) => {
   //takes in the product id that is to be deleted then passes in getState as token is needed
-
   try {
     dispatch({
       type: UPDATE_PRODUCT_REQUEST, //DISPATCH the DELETE product request and set loading to true
@@ -174,6 +176,49 @@ export const productUpdate = (product) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: UPDATE_PRODUCT_FAIL, // order creation failed
+      //error message is passed in as the payload.
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const productReview = (productID, review) => async (
+  dispatch,
+  getState
+) => {
+  //takes in the productID and the review object that will contain the rating + comment
+  //that is to be deleted then passes in getState as token is needed
+  try {
+    dispatch({
+      type: REVIEW_PRODUCT_REQUEST, //DISPATCH the DELETE product request and set loading to true
+    })
+
+    const {
+      userLogin: { userInformation }, //this is where user info is attained
+    } = getState()
+    //destrucutre from getState function to get userLogin.
+    //destructure userLogin to attain the user's information which is in user login => gives access to the logged in user object
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInformation.token}`, //pass the token in the headers as Authorization and set it to Bearer
+      },
+    }
+
+    await axios.post(`/api/products/${productID}`, review, config)
+    //PUT request to /api/orders/id (backend)
+    //pass in the review object and the config
+
+    dispatch({
+      type: REVIEW_PRODUCT_SUCCESS, //Selete product successfully...
+    })
+  } catch (error) {
+    dispatch({
+      type: REVIEW_PRODUCT_FAIL, // order creation failed
       //error message is passed in as the payload.
       payload:
         error.response && error.response.data.message
