@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 //bringing in useState because the keywords are needed that are part of the component state
-import { Button, Form } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 
 const SearchBar = ({ history }) => {
   const [keyword, setKeyword] = useState('')
@@ -29,10 +29,8 @@ const SearchBar = ({ history }) => {
         placeholder='Search For Products...'
         className='mr-sm-2 ml-sm-5'
         //margin rigth on small screens -> size 2 .... margin left on small screens size 5
+        FcSearch
       ></Form.Control>
-      <Button type='submit' variant='outline-success'>
-        Search
-      </Button>
       {/*outline success == green outline and the search bar will have a padding of 2*/}
     </Form>
   )

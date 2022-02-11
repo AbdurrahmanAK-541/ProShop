@@ -5,21 +5,26 @@ import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listProducts } from '../actions/productsActions'
+import Paging from '../components/Paging'
 
 export const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword
+
+  const pageNumber = match.params.pageNumber || 1
   //getting the keyword from the URL (set in the App.js in the route)
   //keyword will be passed into listProducts as it's the action that gets the products from the backend
   //might be nothing --> send to main homescreen
   //whatever it is, it will have to go through listProducts action
+  //if there's no specific page number, set it to 1.
   const dispatch = useDispatch()
 
   const productList = useSelector((state) => state.productList)
-  const { loading, error, products } = productList
+  const { loading, error, products, page, pages } = productList
 
   useEffect(() => {
-    dispatch(listProducts(keyword)) //accounted for in listProducts in productAction.js
-  }, [dispatch, keyword]) //add keyword as a dependency so thay useEffect fires off whenever the keyword is changed
+    dispatch(listProducts(keyword, pageNumber)) //accounted for in listProducts in productAction.js
+  }, [dispatch, keyword, pageNumber])
+  //add keyword as a dependency so thay useEffect fires off whenever the keyword or pageNumber is changed
 
   return (
     <>
@@ -29,15 +34,20 @@ export const HomeScreen = ({ match }) => {
       ) : error ? (
         <Message variant='danger'>
           {error}
-        </Message> /* */ /* variant danger to display the message in Red */
+        </Message> /* variant danger to display the message in Red */ /* */
       ) : (
-        <Row>
-          {products.map((product) => (
-            <Col key={product._id} sm={12} lg={4} xl={3}>
-              <Product product={product} />
-            </Col>
-          ))}
-        </Row>
+        <>
+          <Row>
+            {products.map((product) => (
+              <Col key={product._id} sm={12} lg={4} xl={3}>
+                <Product product={product} />
+              </Col>
+            ))}
+          </Row>
+          <Paging pages={pages} page={page} />
+          {/* passing down page, pages ... from productList state above*/}
+          {/* if theres a keyword inputted use the keyword. else, use an empty string.*/}
+        </>
       )}
     </>
   )

@@ -49,9 +49,15 @@ const App = () => {
             path='/admin/product/:id/editProducts'
             component={EditProductScreen}
           />
-          <Route path='/' component={HomeScreen} exact />
           <Route path='/search/:keyword' component={HomeScreen} />
           {/*becomes a placeholder for whatever the keyword is.*/}
+          <Route path='/page/:pageNumber' component={HomeScreen} exact />
+          <Route
+            path='/search/:keyword/page/:pageNumber'
+            component={HomeScreen}
+            exact
+          />
+          <Route path='/' component={HomeScreen} exact />
         </Container>
       </main>
       <Footer />

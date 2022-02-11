@@ -6,6 +6,9 @@ import Product from '../models/productModel.js'
 // @access       Public
 
 const getProducts = asyncHandler(async (req, res) => {
+  const pageSize = 2
+  const page = Number(req.query.pageNumber) || 1
+
   //query is how you can get query strings when theres a question mark involved e.g in productsActions with ?keyword.
   const keyword = req.query.keyword
     ? {
@@ -19,10 +22,14 @@ const getProducts = asyncHandler(async (req, res) => {
     : {} //if it doesnt exist/empty string then use empty curly brackets
 
   //spread keyword above...
-
+  //can use .count but it will show a DeprecationWarning --> collection.count will be removed in a future version =
+  //use Collection.countDocuments/estimatedDocumentCount
+  const countOfProducts = await Product.countDocuments({ ...keyword })
   const products = await Product.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
 
-  res.json(products)
+  res.json({ products, page, pages: Math.ceil(countOfProducts / pageSize) })
 })
 
 // @description  Fetch single products
