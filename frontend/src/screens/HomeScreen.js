@@ -5,12 +5,13 @@ import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listProducts } from '../actions/productsActions'
-import Paging from '../components/Paging'
+//import Paging from '../components/Paging'
 
 export const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword
 
-  const pageNumber = match.params.pageNumber || 1
+  //const pageNumber = match.params.pageNumber || 1
+
   //getting the keyword from the URL (set in the App.js in the route)
   //keyword will be passed into listProducts as it's the action that gets the products from the backend
   //might be nothing --> send to main homescreen
@@ -19,11 +20,11 @@ export const HomeScreen = ({ match }) => {
   const dispatch = useDispatch()
 
   const productList = useSelector((state) => state.productList)
-  const { loading, error, products, page, pages } = productList
+  const { loading, error, products /*page, pages*/ } = productList
 
   useEffect(() => {
-    dispatch(listProducts(keyword, pageNumber)) //accounted for in listProducts in productAction.js
-  }, [dispatch, keyword, pageNumber])
+    dispatch(listProducts(keyword /*pageNumber*/)) //accounted for in listProducts in productAction.js
+  }, [dispatch, keyword /*pageNumber*/])
   //add keyword as a dependency so thay useEffect fires off whenever the keyword or pageNumber is changed
 
   return (
@@ -44,7 +45,8 @@ export const HomeScreen = ({ match }) => {
               </Col>
             ))}
           </Row>
-          <Paging pages={pages} page={page} />
+          {/*<Paging pages={pages} page={page} /> */}
+
           {/* passing down page, pages ... from productList state above*/}
           {/* if theres a keyword inputted use the keyword. else, use an empty string.*/}
         </>

@@ -21,14 +21,15 @@ import {
 } from '../constants/productConstants'
 
 //pass in keywords for the searchBar and set it to an empty string by default.
-export const listProducts = (keyword = '', pageNumber = '') => async (
+export const listProducts = (keyword = '' /*pageNumber = ''*/) => async (
   dispatch
 ) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST })
 
     const { data } = await axios.get(
-      `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+      `/api/products?keyword=${keyword}`
+      /*&pageNumber=${pageNumber}*/
     )
 
     dispatch({
