@@ -5,6 +5,7 @@ import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listProducts } from '../actions/productsActions'
+import ProductSlide from '../components/ProductSlide'
 //import Paging from '../components/Paging'
 
 export const HomeScreen = ({ match }) => {
@@ -29,6 +30,7 @@ export const HomeScreen = ({ match }) => {
 
   return (
     <>
+      {!keyword && <ProductSlide />}
       <h1> Products </h1>
       {loading ? (
         <Loader />

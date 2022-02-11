@@ -7,12 +7,14 @@ import {
   updateProducts,
   createProducts,
   newProductReview,
+  getTopRatedProducts,
 } from '../controllers/productController.js'
 import { protector, adminOnly } from '../middleware/AuthenticationMiddleware.js'
 
 //The main product list
 router.route('/').get(getProducts).post(protector, adminOnly, createProducts)
 router.route('/:id/reviews').post(protector, newProductReview)
+router.get('/topRated', getTopRatedProducts) //no need for the protector middleware as it's public
 
 router
   .route('/:id')

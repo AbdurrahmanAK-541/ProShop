@@ -18,6 +18,9 @@ import {
   REVIEW_PRODUCT_REQUEST,
   REVIEW_PRODUCT_SUCCESS,
   REVIEW_PRODUCT_FAIL,
+  TOP_PRODUCT_REQUEST,
+  TOP_PRODUCT_SUCCESS,
+  TOP_PRODUCT_FAIL,
 } from '../constants/productConstants'
 
 //pass in keywords for the searchBar and set it to an empty string by default.
@@ -226,6 +229,27 @@ export const productReview = (productID, review) => async (
     dispatch({
       type: REVIEW_PRODUCT_FAIL, // order creation failed
       //error message is passed in as the payload.
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const listTopRatedProducts = () => async (dispatch) => {
+  try {
+    dispatch({ type: TOP_PRODUCT_REQUEST })
+
+    const { data } = await axios.get(`/api/products/topRated`)
+
+    dispatch({
+      type: TOP_PRODUCT_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: TOP_PRODUCT_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
