@@ -5,8 +5,10 @@ import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listProducts } from '../actions/productsActions'
+import TabName from '../components/TabName'
 import ProductSlide from '../components/ProductSlide'
 //import Paging from '../components/Paging'
+import { Link } from 'react-router-dom'
 
 export const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword
@@ -30,14 +32,21 @@ export const HomeScreen = ({ match }) => {
 
   return (
     <>
-      {!keyword && <ProductSlide />}
+      <TabName />
+      {!keyword ? (
+        <ProductSlide />
+      ) : (
+        <Link to='/' className='btn btn-dark'>
+          Back
+        </Link>
+      )}
       <h1> Products </h1>
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant='danger'>
           {error}
-        </Message> /* variant danger to display the message in Red */ /* */
+        </Message> /* */ /* variant danger to display the message in Red */
       ) : (
         <>
           <Row>

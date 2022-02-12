@@ -19,6 +19,7 @@ import { listProductDetails, productReview } from '../actions/productsActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { REVIEW_PRODUCT_RESET } from '../constants/productConstants'
+import TabName from '../components/TabName'
 
 const ProductScreen = ({ history, match }) => {
   /*Added history because it's needed to push*/
@@ -80,6 +81,7 @@ const ProductScreen = ({ history, match }) => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
+          <TabName title={product.name} />
           <Row>
             <Col md={6}>
               <Image src={product.image} alt={product.name} fluid />

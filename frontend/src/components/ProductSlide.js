@@ -21,7 +21,7 @@ const ProductSlide = () => {
     <Loader />
   ) : error ? (
     <Message variant='danger'>{error}</Message>
-  ) : (
+  ) : /*
     <Carousel pause='hover' className='bg-dark'>
       {products.map((product) => (
         <Carousel.Item key={product._id}>
@@ -36,7 +36,8 @@ const ProductSlide = () => {
         </Carousel.Item>
       ))}
     </Carousel>
-  )
+    */
+  null
 }
 
 export default ProductSlide
