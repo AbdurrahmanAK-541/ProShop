@@ -61,7 +61,7 @@ const reducer = combineReducers({
 const cartItemsFromStorage = localStorage.getItem('cartItems')
   ? JSON.parse(localStorage.getItem('cartItems'))
   : []
-/*fetched from localStorage and IF it exists then we get it from cartItems and if its there then we run it through JSON.parse 
+/*fetched from localStorage and IF it exists then we get it from cartItems and if its there then run it through JSON.parse 
 as it needs to be stored as a String ELSE if its not found in localStorage then pass in an empty array*/
 
 const userInformationFromStorage = localStorage.getItem('userInformation')
