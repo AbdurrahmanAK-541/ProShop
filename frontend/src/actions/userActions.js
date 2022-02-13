@@ -180,6 +180,13 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       type: USER_UPDATED_PROFILE_SUCCESS,
       payload: data, //data UPDATED and displayed on profile screen (dispatched in profile screen)
     })
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data, //data UPDATED and displayed on profile screen (dispatched in profile screen)
+    })
+
+    localStorage.setItem('userInformation', JSON.stringify(data))
   } catch (error) {
     dispatch({
       type: USER_UPDATED_PROFILE_FAIL,

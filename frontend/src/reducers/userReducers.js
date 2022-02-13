@@ -2,6 +2,7 @@ import {
   USER_UPDATED_PROFILE_REQUEST,
   USER_UPDATED_PROFILE_SUCCESS,
   USER_UPDATED_PROFILE_FAIL,
+  USER_UPDATED_PROFILE_RESET,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
@@ -80,6 +81,8 @@ export const userUpdatedProfileReducer = (state = {}, action) => {
     //upon success, set the user infotmation to payload and a success value to true to use in the screen
     case USER_UPDATED_PROFILE_FAIL:
       return { loading: false, error: action.payload }
+    case USER_UPDATED_PROFILE_RESET:
+      return {}
     default:
       return state
   }

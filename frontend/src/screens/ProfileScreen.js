@@ -7,6 +7,7 @@ import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { listUserOrder } from '../actions/ordersActions'
 //import { LinkContainer } from 'react-router-bootstrap'
 import { NavLink } from 'react-router-dom'
+import { USER_UPDATED_PROFILE_RESET } from '../constants/userConstants'
 
 const ProfileScreen = ({ location, history }) => {
   const [email, setEmail] = useState('')
@@ -35,7 +36,8 @@ const ProfileScreen = ({ location, history }) => {
       history.push('/login') //send the user to the login page to login
     } else {
       //or
-      if (!user.name) {
+      if (!user || !user.name || success) {
+        dispatch({ type: USER_UPDATED_PROFILE_RESET })
         //check for the user name coming from UserDetails
         dispatch(getUserDetails('profile')) //userDetails gets in an id but in this case will be taking in 'profile' and that's what will be passed in the URL 10:22
         dispatch(listUserOrder()) //can be seen in the redux state
@@ -45,7 +47,7 @@ const ProfileScreen = ({ location, history }) => {
         setEmail(user.email) //display the user email
       }
     }
-  }, [dispatch, history, userInformation, user]) //passed in dependencies for useEffect. fired off when a change is submitted
+  }, [dispatch, history, userInformation, user, success]) //passed in dependencies for useEffect. fired off when a change is submitted
 
   const submitHandler = (e) => {
     //call submit handler by submitting the form
