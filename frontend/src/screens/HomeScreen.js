@@ -46,12 +46,18 @@ export const HomeScreen = ({ match }) => {
       ) : error ? (
         <Message variant='danger'>
           {error}
-        </Message> /* */ /* variant danger to display the message in Red */
+        </Message> /* variant danger to display the message in Red */ /* */
       ) : (
         <>
           <Row>
             {products.map((product) => (
-              <Col key={product._id} sm={12} lg={4} xl={3}>
+              <Col
+                key={product._id}
+                sm={12}
+                lg={4}
+                xl={3}
+                className='align-items-stretch d-flex'
+              >
                 <Product product={product} />
               </Col>
             ))}
