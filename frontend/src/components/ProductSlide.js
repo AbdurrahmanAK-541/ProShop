@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+//import { Link } from 'react-router-dom'
 //import { NavLink } from 'react-router-dom'
-import { Carousel, Image } from 'react-bootstrap'
+//import { Carousel, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from './Message'
 import Loader from './Loader'
@@ -11,7 +11,7 @@ const ProductSlide = () => {
   const dispatch = useDispatch()
 
   const topRatedProducts = useSelector((state) => state.topRatedProducts) //8:30
-  const { loading, error, products } = topRatedProducts
+  const { loading, error /*products*/ } = topRatedProducts
 
   useEffect(() => {
     dispatch(listTopRatedProducts())

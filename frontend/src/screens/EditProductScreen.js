@@ -15,6 +15,7 @@ const EditProductScreen = ({ match, history }) => {
   //use match to get the UserID and put it in a variable.
   const [name, setName] = useState('') //set to an empty string by default
   const [price, setPrice] = useState(0) //set to 0 by default
+  const [priceBefore, setPriceBefore] = useState(0) //set to 0 by default
   const [image, setImage] = useState('') //set to an empty string by default
   const [brand, setBrand] = useState('') //set to an empty string by default
   const [category, setCategory] = useState('') //set to an empty string by default
@@ -50,6 +51,7 @@ const EditProductScreen = ({ match, history }) => {
       } else {
         //if the product does exist then set the following fields..
         setName(product.name)
+        setPriceBefore(product.priceBefore)
         setPrice(product.price)
         setImage(product.image)
         setBrand(product.brand)
@@ -88,6 +90,7 @@ const EditProductScreen = ({ match, history }) => {
       productUpdate({
         _id: productID,
         name,
+        priceBefore,
         price,
         image,
         brand,
@@ -121,6 +124,16 @@ const EditProductScreen = ({ match, history }) => {
                 placeholder='Enter Name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId='priceBefore'>
+              <Form.Label>Price Before</Form.Label>
+              <Form.Control
+                type='number'
+                placeholder='Enter price before'
+                value={priceBefore}
+                onChange={(e) => setPriceBefore(e.target.value)}
               ></Form.Control>
             </Form.Group>
 

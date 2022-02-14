@@ -38,7 +38,7 @@ const PlaceOrderScreen = ({ history }) => {
     )
   )
 
-  cart.collectionFee = includeDecimals(cart.sumItemsPrice > 100 ? 0 : 100)
+  cart.collectionFee = includeDecimals(cart.sumItemsPrice > 5 ? 0 : 1)
   //if the items in the cart are greater than £100 then collection is free. else its £100
   cart.vatPrice = includeDecimals(
     Number((0.15 * cart.sumItemsPrice).toFixed(2))
@@ -175,7 +175,7 @@ const PlaceOrderScreen = ({ history }) => {
 
               <ListGroup.Item>
                 <Row>
-                  <Col>Collection Fee</Col> {/*mini header displayed*/}
+                  <Col>Delivery Fee</Col> {/*mini header displayed*/}
                   <Col>${cart.collectionFee}</Col>
                   {/*fee to collect items from store*/}
                 </Row>

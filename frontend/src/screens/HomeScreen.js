@@ -40,7 +40,7 @@ export const HomeScreen = ({ match }) => {
           Back
         </Link>
       )}
-      <h1> Products </h1>
+      <h1> All Products </h1>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -57,6 +57,7 @@ export const HomeScreen = ({ match }) => {
                 lg={4}
                 xl={3}
                 className='align-items-stretch d-flex'
+                //aligns all the product cards equally = same size and positioning
               >
                 <Product product={product} />
               </Col>
