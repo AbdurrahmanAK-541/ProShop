@@ -7,14 +7,10 @@ import Loader from '../components/Loader'
 import { listProducts } from '../actions/productsActions'
 import TabName from '../components/TabName'
 import ProductSlide from '../components/ProductSlide'
-//import Paging from '../components/Paging'
 import { Link } from 'react-router-dom'
 
 export const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword
-
-  //const pageNumber = match.params.pageNumber || 1
-
   //getting the keyword from the URL (set in the App.js in the route)
   //keyword will be passed into listProducts as it's the action that gets the products from the backend
   //might be nothing --> send to main homescreen
@@ -26,8 +22,8 @@ export const HomeScreen = ({ match }) => {
   const { loading, error, products /*page, pages*/ } = productList
 
   useEffect(() => {
-    dispatch(listProducts(keyword /*pageNumber*/)) //accounted for in listProducts in productAction.js
-  }, [dispatch, keyword /*pageNumber*/])
+    dispatch(listProducts(keyword)) //accounted for in listProducts in productAction.js
+  }, [dispatch, keyword])
   //add keyword as a dependency so thay useEffect fires off whenever the keyword or pageNumber is changed
 
   return (
@@ -46,7 +42,7 @@ export const HomeScreen = ({ match }) => {
       ) : error ? (
         <Message variant='danger'>
           {error}
-        </Message> /* variant danger to display the message in Red */ /* */
+        </Message> /* */ /* variant danger to display the message in Red */
       ) : (
         <>
           <Row>

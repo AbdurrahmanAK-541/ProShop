@@ -29,7 +29,7 @@ const AddressScreen = ({ history }) => {
     <FormContainer>
       <CheckoutProcess p1 p2 />
       {/*bring in the check out process that involves part1 (login) and part 2(userAddress )*/}
-      <h1>User Address</h1>
+      <h1>Delivery Address</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='address'>
           <Form.Label>User Address</Form.Label>

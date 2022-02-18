@@ -18,7 +18,7 @@ const CheckoutProcess = ({ p1, p2, p3, p4 }) => {
       <Nav.Item>
         {/* if on part 2 of the process, then display address . else, disable address*/}
         {p2 ? (
-          <Nav.Link href='/address'>2. Address</Nav.Link>
+          <Nav.Link href='/address'>2. Delivery</Nav.Link>
         ) : (
           <Nav.Link disabled>Address</Nav.Link>
         )}

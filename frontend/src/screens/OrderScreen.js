@@ -247,7 +247,7 @@ const OrderScreen = ({ history, match }) => {
 
               <ListGroup.Item>
                 <Row>
-                  <Col>Collection Fee</Col> {/*mini header displayed*/}
+                  <Col>Delivery Fee</Col> {/*mini header displayed*/}
                   <Col>${order.collectionFee}</Col>
                   {/*fee to collect items from store*/}
                 </Row>
